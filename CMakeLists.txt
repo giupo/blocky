@@ -2,14 +2,23 @@ cmake_minimum_required(VERSION 2.8.9)
 set(EXECUTABLE blocky)
 project(${EXECUTABLE})
 
-set(CMAKE_MODULE_PATH ${PROJECT_SOURCE_DIR}/cmake)
+set(CMAKE_MODULE_PATH ${CMAKE_MODULE_PATH} ${PROJECT_SOURCE_DIR}/cmake)
+
+# list(APPEND CMAKE_MODULE_PATH ${CMAKE_ROOT}/Modules)
+#list(APPEND CMAKE_MODULE_PATH ${PROJECT_SOURCE_DIR}/cmake)
+
+include(FindPackageHandleStandardArgs)
 
 include_directories(include)
+
 find_package(SDL2 REQUIRED)
+find_package(Chipmunk REQUIRED)
 
 include_directories(${SDL2_INCLUDE_DIR})
+include_directories(${CHIPMUNK_INCLUDE_DIR})
 
 file(GLOB SOURCES "src/*.cpp")
 
 add_executable(${EXECUTABLE} ${SOURCES})
 target_link_libraries(${EXECUTABLE} ${SDL2_LIBRARY})
+target_link_libraries(${EXECUTABLE} ${CHIPMUNK_LIBRARY})
