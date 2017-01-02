@@ -37,3 +37,6 @@
 #blocky executable
 blocky
 blocky.exe
+
+# ignore build dir
+build
