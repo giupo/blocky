@@ -2,7 +2,7 @@
 
 #include <SDL2/SDL.h>
 #include <chipmunk/chipmunk.h>
-#include <chipmunk_structs.h>
+//#include <chipmunk_structs.h>
 
 
 int main(int argc, char** argv) {
@@ -20,7 +20,7 @@ int main(int argc, char** argv) {
   // We'll make it slightly tilted so the ball will roll off.
   // We attach it to space->staticBody to tell Chipmunk it shouldn't be movable.
 
-  cpShape *ground = cpSegmentShapeNew(space->staticBody,
+  cpShape *ground = cpSegmentShapeNew(cpSpaceGetStaticBody(space),
                                       cpv(-20, 5),
                                       cpv(20, -5),
                                       0);
