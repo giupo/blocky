@@ -22,3 +22,7 @@ file(GLOB SOURCES "src/*.cpp")
 add_executable(${EXECUTABLE} ${SOURCES})
 target_link_libraries(${EXECUTABLE} ${SDL2_LIBRARY})
 target_link_libraries(${EXECUTABLE} ${CHIPMUNK_LIBRARY})
+
+add_custom_command(TARGET ${EXECUTABLE} POST_BUILD
+                   COMMAND ${CMAKE_COMMAND} -E copy_directory
+                       ${CMAKE_SOURCE_DIR}/config $<TARGET_FILE_DIR:${EXECUTABLE}>)
