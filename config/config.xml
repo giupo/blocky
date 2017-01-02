@@ -1,0 +1,13 @@
+<Root>
+  <Actor name="player1">
+    <InputComponent />
+    <PhysicComponent />
+    <RenderComponent />
+  </Actor>
+  
+  <Actor name="AI">
+    <AIComponent />
+    <PhysicComponent />
+    <RenderComponent />
+  </Actor>
+</Root>
