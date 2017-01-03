@@ -7,28 +7,21 @@
 #include <csignal>
 #endif
 
+#include <map>
+
 #include "blocky_main.h"
 #include "game.h"
 #include "tinyxml2.h"
+#include "blocky_macros.h"
 #include "easylogging++.h"
-#include "component_factories.h"
-#include <map>
-#ifndef XMLCheckResult
-	#define XMLCheckResult(a_eResult) if (a_eResult != XML_SUCCESS) { printf("Error: %i\n", a_eResult); return a_eResult; }
-#endif
 
 using namespace tinyxml2;
-
-Component* test_me() {
-  LOG(DEBUG) << "Called!";
-  return nullptr;
-}
 
 
 int blocky_main(int argc, char **argv) {
 
+  Game g;
   // Loading XML config file
-  creators_map.emplace("test_me", &test_me);
   // TODO: Deve essere sostituito con un ResourceFile unico
   XMLDocument xmlDoc;
   XMLError eResult = xmlDoc.LoadFile("config.xml");
@@ -39,12 +32,12 @@ int blocky_main(int argc, char **argv) {
     LOG(ERROR) << "XML root element is nullptr";
     return XML_ERROR_FILE_READ_ERROR;
   }
-  creators_map["test_me"]();
-  Game g;
+
   if(g.init(pRoot)) {
     LOG(ERROR) << "Cannot init game";
   }
-  return g.loop();
+  int rc = g.loop();
+  return rc;
 }
 
 

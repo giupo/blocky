@@ -5,17 +5,18 @@
 #include "tinyxml2.h"
 #include "actor.h"
 #include "component_factories.h"
+#include "actor_factory.h"
 
 Game::Game() {
 }
 
 Game::~Game() {
-  MessageQueue* queue = ServiceLocator::getMessageQueue();
-  delete queue;
+  ServiceLocator::shutdown();
 }
 
 int Game::init(tinyxml2::XMLNode *node) {
-  
+   // setup ServiceLocator
+  ServiceLocator::provide(new ActorFactory());
   ServiceLocator::provide(new MessageQueue());
   return 0;
 }

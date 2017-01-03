@@ -7,8 +7,7 @@
 #include "component.h"
 
 typedef Component* (*CreateFunction)(void);
-typedef std::map<std::string, CreateFunction> FunctionMap;
 
 Component* test_me();
-static FunctionMap creators_map;
+
 #endif
