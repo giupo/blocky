@@ -3,17 +3,17 @@
 
 #include <vector>
 
-typedef struct Message_ {
+typedef struct {
   int type;
   void* data;
 } Message;
 
 class MessageQueue {
  private:
-  std::vector<Message*> *queue;
+  std::vector<Message*> queue;
  public:
-  MessageQueue();
-  ~MessageQueue();
+  MessageQueue(): queue() {}
+  ~MessageQueue() {}
   int add(Message* msg);
 };
 

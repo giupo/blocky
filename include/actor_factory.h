@@ -4,26 +4,38 @@
 #include <map>
 #include <string>
 
+#include "tinyxml2.h"
 #include "component_factories.h"
- 
-typedef unsigned long ActorId;
-typedef std::map<std::string, CreateFunction> CreatorMap;
-typedef std::string ActorName;
+#include "actor.h"
+
+typedef std::map<ComponentTypeName, CreateFunction> CreatorMap;
+typedef std::shared_ptr<Actor> StrongActorPtr;
+typedef std::weak_ptr<Actor> WeakActorPtr;
+typedef std::shared_ptr<Component> StrongActorComponentPtr;
+typedef std::weak_ptr<Component> WeakActorComponentPtr;
 
 class ActorFactory {
- private:
+private:
   ActorId nextId;
   CreatorMap creatorMap;
- public:
+public:
   ActorFactory(): nextId(0) {
-   creatorMap = {
-     { "test_me", &test_me } 
-   };
-   creatorMap["test_me"]();
+    creatorMap = {
+      { "test_me", &test_me } 
+    };
+    creatorMap["test_me"]();
   }
   ~ActorFactory() {}
-
   
+  /** 
+   *
+   * @brief Creates an Actor from XML
+   * 
+   * @param node XML node containing config info
+   * 
+   * @return a pointer to an Actor 
+   */
+  StrongActorPtr create(tinyxml2::XMLNode *node);
 };
 
 #endif

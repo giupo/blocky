@@ -6,6 +6,7 @@
 #include "easylogging++.h"
 #include "component.h"
 
+typedef std::string ComponentTypeName; 
 typedef Component* (*CreateFunction)(void);
 
 Component* test_me();

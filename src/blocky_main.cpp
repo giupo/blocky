@@ -17,7 +17,6 @@
 
 using namespace tinyxml2;
 
-
 int blocky_main(int argc, char **argv) {
 
   Game g;
