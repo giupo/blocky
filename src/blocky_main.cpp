@@ -28,7 +28,7 @@ int blocky_main(int argc, char **argv) {
   XMLCheckResult(eResult);
 
   XMLNode* pRoot = xmlDoc.FirstChild();
-  if (pRoot == nullptr) {
+  if (nullptr == pRoot) {
     LOG(ERROR) << "XML root element is nullptr";
     return XML_ERROR_FILE_READ_ERROR;
   }
