@@ -11,4 +11,5 @@ MessageQueue::~MessageQueue() {
 
 int MessageQueue::add(Message* msg) {
   this->queue->push_back(msg);
+  return 1;
 }

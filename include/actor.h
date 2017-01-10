@@ -9,7 +9,7 @@
 
 class Actor {
  private:
-  std::vector<Component*> *components;
+  std::vector<BComponent*> *components;
   
  public:
   Actor();

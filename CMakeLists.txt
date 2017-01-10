@@ -2,12 +2,11 @@ cmake_minimum_required(VERSION 2.8.9)
 set(EXECUTABLE blocky)
 project(${EXECUTABLE})
 
+set (CMAKE_CXX_STANDARD 11)
 set(CMAKE_MODULE_PATH ${CMAKE_MODULE_PATH} ${PROJECT_SOURCE_DIR}/cmake)
 
-# list(APPEND CMAKE_MODULE_PATH ${CMAKE_ROOT}/Modules)
-#list(APPEND CMAKE_MODULE_PATH ${PROJECT_SOURCE_DIR}/cmake)
-
 include(FindPackageHandleStandardArgs)
+include(FindGTest)
 
 include_directories(include)
 

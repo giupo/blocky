@@ -6,9 +6,9 @@
 #include "easylogging++.h"
 #include "component.h"
 
-typedef Component* (*CreateFunction)(void);
+typedef BComponent* (*CreateFunction)(void);
 typedef std::map<std::string, CreateFunction> FunctionMap;
 
-Component* test_me();
+BComponent* test_me();
 static FunctionMap creators_map;
 #endif

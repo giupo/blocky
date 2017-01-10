@@ -6,7 +6,8 @@
 #include "message_queue.h"
 #include "tinyxml2.h"
 
-class Component {
+
+class BComponent {
  public:
   virtual int init(tinyxml2::XMLNode* node) =0;
   virtual int destroy() =0;

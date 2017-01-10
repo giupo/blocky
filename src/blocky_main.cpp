@@ -19,7 +19,7 @@
 
 using namespace tinyxml2;
 
-Component* test_me() {
+BComponent* test_me() {
   LOG(DEBUG) << "Called!";
   return nullptr;
 }
