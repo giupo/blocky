@@ -24,6 +24,9 @@ BComponent* test_me() {
   return nullptr;
 }
 
+/**
+ * @brief 
+ */
 
 int blocky_main(int argc, char **argv) {
 
@@ -35,10 +38,12 @@ int blocky_main(int argc, char **argv) {
   XMLCheckResult(eResult);
 
   XMLNode* pRoot = xmlDoc.FirstChild();
+
   if (pRoot == nullptr) {
     LOG(ERROR) << "XML root element is nullptr";
     return XML_ERROR_FILE_READ_ERROR;
   }
+
   creators_map["test_me"]();
   Game g;
   if(g.init(pRoot)) {
