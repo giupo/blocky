@@ -11,4 +11,6 @@ typedef std::map<std::string, CreateFunction> FunctionMap;
 
 BComponent* test_me();
 static FunctionMap creators_map;
+void setupCreators();
+
 #endif

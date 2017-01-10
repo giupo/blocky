@@ -10,7 +10,6 @@
 class Actor {
  private:
   std::vector<BComponent*> *components;
-  
  public:
   Actor();
   ~Actor();

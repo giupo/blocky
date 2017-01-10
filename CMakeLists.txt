@@ -32,9 +32,13 @@ add_custom_command(TARGET ${EXECUTABLE} POST_BUILD
                    COMMAND ${CMAKE_COMMAND} -E copy_directory
                    ${CMAKE_SOURCE_DIR}/config $<TARGET_FILE_DIR:${EXECUTABLE}>)
 
-enable_testing()		 
+enable_testing()
+file(GLOB TEST_SOURCES "tests/*.cpp")
+
 find_package(GTest REQUIRED)
 include_directories(${GTEST_INCLUDE_DIRS})
-add_executable(test_blocky tests/test_blocky.cpp)
+add_executable(test_blocky ${TEST_SOURCES})
 target_link_libraries(test_blocky ${GTEST_BOTH_LIBRARIES})
+target_link_libraries(${EXECUTABLE} ${SDL2_LIBRARY})
+target_link_libraries(${EXECUTABLE} ${CHIPMUNK_LIBRARY})
 add_test(AllTestsInBlocky test_blocky)

@@ -1,5 +1,6 @@
 #include "gtest/gtest.h"
 #include <cmath>
+#include "component_factories.h"
 
 double square_root (const double x) {
   return sqrt(x);
@@ -16,8 +17,10 @@ TEST (SquareRootTest, ZeroAndNegativeNos) {
   //ASSERT_EQ (-1, square_root (-22.0));
 }
 
-TEST(IWillAlwaysFail, Failiure) {
-  ASSERT_NE(0, 1);
+TEST(AssertMainStructures, MainStructures) {
+  ASSERT_EQ(0, creators_map.size());
+  //ASSERT_GT(0, creators_map.size());
+  
 }
 
 int main(int argc, char **argv) {

@@ -14,7 +14,9 @@
 #include "component_factories.h"
 #include <map>
 #ifndef XMLCheckResult
-	#define XMLCheckResult(a_eResult) if (a_eResult != XML_SUCCESS) { printf("Error: %i\n", a_eResult); return a_eResult; }
+	#define XMLCheckResult(a_eResult) if (a_eResult != XML_SUCCESS) { \
+  printf("Error: %i\n", a_eResult); return a_eResult;			\
+ }
 #endif
 
 using namespace tinyxml2;
@@ -24,14 +26,13 @@ BComponent* test_me() {
   return nullptr;
 }
 
+
 /**
- * @brief 
+ * @brief App main entry
  */
 
 int blocky_main(int argc, char **argv) {
-
   // Loading XML config file
-  creators_map.emplace("test_me", &test_me);
   // TODO: Deve essere sostituito con un ResourceFile unico
   XMLDocument xmlDoc;
   XMLError eResult = xmlDoc.LoadFile("config.xml");
@@ -39,11 +40,12 @@ int blocky_main(int argc, char **argv) {
 
   XMLNode* pRoot = xmlDoc.FirstChild();
 
-  if (pRoot == nullptr) {
+  if (nullptr == pRoot) {
     LOG(ERROR) << "XML root element is nullptr";
     return XML_ERROR_FILE_READ_ERROR;
   }
-
+  setupCreators();
+  
   creators_map["test_me"]();
   Game g;
   if(g.init(pRoot)) {
