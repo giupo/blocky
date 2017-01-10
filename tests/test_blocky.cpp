@@ -17,7 +17,7 @@ TEST (SquareRootTest, ZeroAndNegativeNos) {
   //ASSERT_EQ (-1, square_root (-22.0));
 }
 
-TEST(AssertMainStructures, MainStructures) {
+TEST (AssertMainStructures, MainStructures) {
   ASSERT_EQ(0, creators_map.size());
   //ASSERT_GT(0, creators_map.size());
   
