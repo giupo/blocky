@@ -18,10 +18,12 @@ include(FindGTest)
 include_directories(include)
 
 find_package(SDL2 REQUIRED)
+#find_package(SDL_image REQUIRED)
 find_package(Chipmunk REQUIRED)
 
 include_directories(${SDL2_INCLUDE_DIR})
 include_directories(${CHIPMUNK_INCLUDE_DIR})
+# include_directories(${SDL_image_INCLUDE_DIR})
 
 file(GLOB SOURCES "src/*.cpp")
 
@@ -45,4 +47,4 @@ add_executable(${TEST_EXECUTABLE} ${TEST_SOURCES})
 target_link_libraries(${TEST_EXECUTABLE} ${GTEST_BOTH_LIBRARIES})
 target_link_libraries(${TEST_EXECUTABLE} ${SDL2_LIBRARY})
 target_link_libraries(${TEST_EXECUTABLE} ${CHIPMUNK_LIBRARY})
-add_test(AllTestsInBlocky test_blocky)
+add_test(AllTestsInBlocky ${TEST_EXECUTABLE})

@@ -17,7 +17,7 @@
 #include "component_factories.h"
 #include "actor_factory.h"
 #include "service_locator.h"
-
+#include "screen.h"
 using namespace tinyxml2;
 
 /**
@@ -30,7 +30,7 @@ int blocky_main(int argc, char **argv) {
   ServiceLocator::provide(new ComponentFactory());
   ServiceLocator::provide(new MessageQueue());
   ServiceLocator::provide(new ActorFactory());
-  
+  ServiceLocator::provide(new Screen());
   // Loading XML config file
   // TODO: Deve essere sostituito con un ResourceFile unico
   XMLDocument xmlDoc;
@@ -47,12 +47,6 @@ int blocky_main(int argc, char **argv) {
 
   ServiceLocator::getComponentFactory()->init();
 
-  LOG(DEBUG) << "Testing creators map";
-  //FIXME:: c'e' qualcosa che non va qui
-  //creators_map["test_me"]();
-  LOG(DEBUG) << "Testing completed";
-
-  
   Game g;
 
   if(g.init(pRoot)) {
