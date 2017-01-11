@@ -1,8 +1,15 @@
-#include "gtest/gtest.h"
+#include <exception>
 #include <cmath>
+
+#include "gtest/gtest.h"
+
 #include "component_factories.h"
+#include "service_locator.h"
 
 double square_root (const double x) {
+  if (x < 0) {
+    throw std::exception();
+  }
   return sqrt(x);
 }
 
@@ -13,14 +20,15 @@ TEST (SquareRootTest, PositiveNos) {
 }
  
 TEST (SquareRootTest, ZeroAndNegativeNos) { 
-  //ASSERT_EQ (0.0, square_root (0.0));
-  //ASSERT_EQ (-1, square_root (-22.0));
+  EXPECT_EQ (0.0, square_root (0.0));
+  EXPECT_THROW(square_root (-22.0), std::exception);
 }
 
+
 TEST (AssertMainStructures, MainStructures) {
-  ASSERT_EQ(0, creators_map.size());
-  //ASSERT_GT(0, creators_map.size());
-  
+  ServiceLocator::provide(new ComponentFactory());
+  //EXPECT_EQ(0, ServiceLocator::getComponentFactory()->getCreatorsMap()->size());
+  //EXPECT_GT(0, ServiceLocator::getComponentFactory()->getCreatorsMap()->size());
 }
 
 int main(int argc, char **argv) {

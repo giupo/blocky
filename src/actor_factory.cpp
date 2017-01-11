@@ -14,5 +14,4 @@ StrongActorPtr ActorFactory::create(tinyxml2::XMLNode *node) {
   ActorId id = ++nextId;
   ActorName actorName = elem->Attribute(ACTOR_NAME_ATTRIBUTE_XML);
   StrongActorPtr actor(new Actor(id, "CIPPA"));
- 
 }

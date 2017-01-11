@@ -23,6 +23,7 @@ public:
     creatorMap = {
       { "test_me", &test_me } 
     };
+    
     creatorMap["test_me"]();
   }
   ~ActorFactory() {}

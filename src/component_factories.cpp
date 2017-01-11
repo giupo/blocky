@@ -2,11 +2,14 @@
 #include "easylogging++.h"
 #include "component.h"
 
+FunctionMap creators_map;
 
 BComponent* test_me() {
   return nullptr;
 }
 
-void setupCreators() {
-   creators_map.emplace("test_me", &test_me);
+void ComponentFactory::init() {
+  LOG(DEBUG) << "Setting up Creators";
+  creators_map.emplace("test_me", &test_me);
+  LOG(DEBUG) << "Setup Creators Completed";  
 }

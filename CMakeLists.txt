@@ -1,5 +1,6 @@
 cmake_minimum_required(VERSION 2.8.9)
 set(EXECUTABLE blocky)
+set(TEST_EXECUTABLE test_blocky)
 project(${EXECUTABLE})
 
 set (CMAKE_CXX_STANDARD 11)
@@ -33,12 +34,15 @@ add_custom_command(TARGET ${EXECUTABLE} POST_BUILD
                    ${CMAKE_SOURCE_DIR}/config $<TARGET_FILE_DIR:${EXECUTABLE}>)
 
 enable_testing()
-file(GLOB TEST_SOURCES "tests/*.cpp")
+file(GLOB TEST_SOURCES "tests/*.cpp" "src/*.cpp")
+
+# Rimuovo il main per non dichiararlo 2 volte
+list(REMOVE_ITEM TEST_SOURCES "${CMAKE_SOURCE_DIR}/src/main.cpp")
 
 find_package(GTest REQUIRED)
 include_directories(${GTEST_INCLUDE_DIRS})
-add_executable(test_blocky ${TEST_SOURCES})
-target_link_libraries(test_blocky ${GTEST_BOTH_LIBRARIES})
-target_link_libraries(${EXECUTABLE} ${SDL2_LIBRARY})
-target_link_libraries(${EXECUTABLE} ${CHIPMUNK_LIBRARY})
+add_executable(${TEST_EXECUTABLE} ${TEST_SOURCES})
+target_link_libraries(${TEST_EXECUTABLE} ${GTEST_BOTH_LIBRARIES})
+target_link_libraries(${TEST_EXECUTABLE} ${SDL2_LIBRARY})
+target_link_libraries(${TEST_EXECUTABLE} ${CHIPMUNK_LIBRARY})
 add_test(AllTestsInBlocky test_blocky)

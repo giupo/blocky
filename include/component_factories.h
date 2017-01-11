@@ -13,7 +13,16 @@ BComponent* test_me();
 typedef BComponent* (*CreateFunction)(void);
 typedef std::map<std::string, CreateFunction> FunctionMap;
 
-static FunctionMap creators_map;
-void setupCreators();
+class ComponentFactory {
+private:
+  FunctionMap creators_map;
+public:
+  ComponentFactory(): creators_map() {}
+  ~ComponentFactory() {}
+  void init();
+  FunctionMap* getCreatorsMap() {
+    return &creators_map;
+  }
+};
 
 #endif
