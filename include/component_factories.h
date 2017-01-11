@@ -6,6 +6,7 @@
 #include "easylogging++.h"
 #include "component.h"
 
+
 typedef BComponent* (*CreateFunction)(void);
 typedef std::map<std::string, CreateFunction> FunctionMap;
 

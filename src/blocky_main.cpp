@@ -7,9 +7,12 @@
 #include <csignal>
 #endif
 
+#include <map>
+
 #include "blocky_main.h"
 #include "game.h"
 #include "tinyxml2.h"
+#include "blocky_macros.h"
 #include "easylogging++.h"
 #include "component_factories.h"
 #include <map>
@@ -26,10 +29,10 @@ BComponent* test_me() {
   return nullptr;
 }
 
-
 /**
  * @brief App main entry
  */
+
 
 int blocky_main(int argc, char **argv) {
   // Loading XML config file
@@ -44,14 +47,17 @@ int blocky_main(int argc, char **argv) {
     LOG(ERROR) << "XML root element is nullptr";
     return XML_ERROR_FILE_READ_ERROR;
   }
+
   setupCreators();
   
   creators_map["test_me"]();
   Game g;
+
   if(g.init(pRoot)) {
     LOG(ERROR) << "Cannot init game";
   }
-  return g.loop();
+  int rc = g.loop();
+  return rc;
 }
 
 

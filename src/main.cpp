@@ -6,7 +6,7 @@
 
 int main(int argc, char** argv) {
   bootstrap_logging();
-  LOG(DEBUG) << "Starting blocky version " << VERSION;
+  LOG(INFO) << "Starting blocky version " << VERSION;
   blocky_main(argc, argv);
   LOG(INFO) << "Bye Bye!";
   return 0;
