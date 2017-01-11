@@ -2,6 +2,11 @@
 #include "easylogging++.h"
 #include "component.h"
 
-Component* test_me() {
+
+BComponent* test_me() {
   return nullptr;
+}
+
+void setupCreators() {
+   creators_map.emplace("test_me", &test_me);
 }

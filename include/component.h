@@ -6,13 +6,13 @@
 #include "message_queue.h"
 #include "tinyxml2.h"
 
+
 typedef unsigned long ComponentId;
 
-class Component {
+class BComponent {
  private:
   ComponentId id;
-  
- public:
+public:
 
   ComponentId getId() {
     return this->id;

@@ -9,6 +9,12 @@
 typedef std::string ComponentTypeName; 
 typedef Component* (*CreateFunction)(void);
 
-Component* test_me();
+BComponent* test_me();
+
+typedef BComponent* (*CreateFunction)(void);
+typedef std::map<std::string, CreateFunction> FunctionMap;
+
+static FunctionMap creators_map;
+void setupCreators();
 
 #endif
