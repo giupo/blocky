@@ -7,7 +7,6 @@
 #include "component.h"
 
 typedef std::string ComponentTypeName; 
-typedef Component* (*CreateFunction)(void);
 
 BComponent* test_me();
 

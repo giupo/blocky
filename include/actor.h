@@ -12,21 +12,15 @@ typedef unsigned long ActorId;
 typedef std::string ActorName;
 
 class Actor {
-<<<<<<< HEAD
 private:
-  std::vector<Component*> *components;
+  std::vector<BComponent*> *components;
   ActorId id;
   ActorName name;
 public:
   Actor(ActorId id_, ActorName name_): id(id_), name(name_) {
-      components = new std::vector<Component*>();
+      components = new std::vector<BComponent*>();
   }; 
-=======
- private:
-  std::vector<BComponent*> *components;
- public:
-  Actor();
->>>>>>> merged
+
   ~Actor();
   int init(tinyxml2::XMLNode* node);
   int destroy();

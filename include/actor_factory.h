@@ -11,8 +11,8 @@
 typedef std::map<ComponentTypeName, CreateFunction> CreatorMap;
 typedef std::shared_ptr<Actor> StrongActorPtr;
 typedef std::weak_ptr<Actor> WeakActorPtr;
-typedef std::shared_ptr<Component> StrongActorComponentPtr;
-typedef std::weak_ptr<Component> WeakActorComponentPtr;
+typedef std::shared_ptr<BComponent> StrongActorComponentPtr;
+typedef std::weak_ptr<BComponent> WeakActorComponentPtr;
 
 class ActorFactory {
 private:

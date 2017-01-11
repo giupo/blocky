@@ -24,15 +24,9 @@
 
 using namespace tinyxml2;
 
-BComponent* test_me() {
-  LOG(DEBUG) << "Called!";
-  return nullptr;
-}
-
 /**
  * @brief App main entry
  */
-
 
 int blocky_main(int argc, char **argv) {
   // Loading XML config file

@@ -6,10 +6,6 @@
 #include "message_queue.h"
 #include "component_factories.h"
 
-Actor::Actor() {
-  components = new std::vector<BComponent*>();
-}
-
 Actor::~Actor() {
   delete components;
 }

@@ -8,7 +8,6 @@
 #include "actor.h"
 #include "component_factories.h"
 #include "actor_factory.h"
-<<<<<<< HEAD
 #include "easylogging++.h"
 
 int Screen::init() {
@@ -24,8 +23,6 @@ int Screen::init() {
         SDL_GetError();
       return -1;
     }
-=======
->>>>>>> merged
 
     if(width_ == 0) {
       width_ = current.w;
@@ -58,8 +55,6 @@ int Screen::init() {
   return 0;
 }
 
-<<<<<<< HEAD
-
 Game::~Game() {  
   ServiceLocator::shutdown();
   SDL_Quit();
@@ -85,14 +80,6 @@ int Game::init(tinyxml2::XMLNode *node) {
   screen.init();
   // setup ServiceLocator
   LOG(DEBUG) << "Setup ServiceLocator";
-=======
-Game::~Game() {
-  ServiceLocator::shutdown();
-}
-
-int Game::init(tinyxml2::XMLNode *node) {
-   // setup ServiceLocator
->>>>>>> merged
   ServiceLocator::provide(new ActorFactory());
   ServiceLocator::provide(new MessageQueue());
   
