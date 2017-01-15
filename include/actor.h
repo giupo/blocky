@@ -23,6 +23,9 @@ public:
 
   ~Actor();
   int init(tinyxml2::XMLNode* node);
+  /**
+     @brief destroys eveyrhing related to this Actor
+  */
   int destroy();
   void update();
   void onMessage(Message& msg);

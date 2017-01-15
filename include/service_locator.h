@@ -5,10 +5,10 @@
 #include "actor_factory.h"
 #include "easylogging++.h"
 #include "screen.h"
-//#include "resource.h"
+// FIXME: evil circular reference here...
+// #include "resource.h"
 
 // forward declaration
-class ResourceManager;
 
 /**
  * @brief Class providing Factories and "singletons" (not-singletons)
@@ -68,19 +68,19 @@ public:
 
   /**
    * @brief provides a ResourceManager
-   */
+   
 
   static void provide(ResourceManager* resourceManager) {
     resourceManager_ = resourceManager;
-  }
+  } */
 
   /**
    * @brief returns a ResourceManager
-   */
+   
 
   static ResourceManager* getResourceManager() {
     return resourceManager_;
-  }
+    }*/
   
   static void shutdown() {
     LOG(DEBUG) << "ServiceLocator shutdown started";
@@ -105,10 +105,10 @@ public:
       screen_ = nullptr;
     }
 
-    if (resourceManager_) {
+    /*if (resourceManager_) {
       delete resourceManager_;
       resourceManager_ = nullptr;
-    }
+      }*/
     
     LOG(DEBUG) << "ServiceLocator shutdown ended";
   }
@@ -118,7 +118,7 @@ public:
   static ActorFactory* actorFactory_;
   static ComponentFactory* componentFactory_;
   static Screen* screen_;
-  static ResourceManager* resourceManager_;
+  //static ResourceManager* resourceManager_;
 };
 
 #endif

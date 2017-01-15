@@ -1,8 +1,10 @@
 #include <SDL2/SDL.h>
 
+#include "screen.h"
+
 #include "easylogging++.h"
 #include "game.h"
-#include "screen.h"
+
 #include "tinyxml2.h"
 #include "service_locator.h"
 

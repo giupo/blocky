@@ -9,4 +9,4 @@ MessageQueue* ServiceLocator::messageQueue_;
 ActorFactory* ServiceLocator::actorFactory_;
 ComponentFactory* ServiceLocator::componentFactory_;
 Screen* ServiceLocator::screen_;
-ResourceManager* ServiceLocator::resourceManager_;
+//ResourceManager* ServiceLocator::resourceManager_;

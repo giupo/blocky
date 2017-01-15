@@ -9,6 +9,7 @@
 #include <SDL2/SDL_image.h>
 
 #include "screen.h"
+class ResourceManager;
 #include "service_locator.h"
 
 
@@ -20,7 +21,6 @@
  */
 class ResourceManager {
 public:
-  ResourceManager() : v_res() {}
   ~ResourceManager() {
     v_res.clear();
   }
@@ -28,7 +28,8 @@ public:
   std::shared_ptr<SDL_Surface> getImage(const std::string name) {
     auto search = v_res.find(name);
     if(search == v_res.end()) {
-      v_res[name] = std::shared_ptr<SDL_Surface>(ResourceManager::loadImage(name));
+      v_res[name] = std::shared_ptr<SDL_Surface>(
+        ResourceManager::loadImage(name));
     }
     return v_res[name];
   }
@@ -39,9 +40,10 @@ public:
     if(nullptr == ServiceLocator::getScreen()) {
       return not_optimized;
     }
-    optimized = SDL_ConvertSurface(not_optimized,
-                                   ServiceLocator::getScreen()->getScreenSurface()->format,
-                                   0);
+    optimized = SDL_ConvertSurface(
+       not_optimized,
+       ServiceLocator::getScreen()->getScreenSurface()->format,
+       0);
     SDL_FreeSurface(not_optimized);
     return optimized;
   }
@@ -49,7 +51,13 @@ public:
   static SDL_Surface* loadImage(const std::string path) {
     return ResourceManager::loadImage(path.c_str());
   }
+
+  static ResourceManager& instance() {
+    static ResourceManager *instance = new ResourceManager();
+    return *instance;
+  }
 private:
+  ResourceManager() : v_res() {}
   std::map<std::string, std::shared_ptr<SDL_Surface> > v_res;
 };
 
