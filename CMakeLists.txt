@@ -1,4 +1,4 @@
-cmake_minimum_required(VERSION 2.8.9)
+cmake_minimum_required(VERSION 2.8.9 FATAL_ERROR)
 set(EXECUTABLE blocky)
 set(TEST_EXECUTABLE test_blocky)
 project(${EXECUTABLE})
@@ -40,7 +40,6 @@ add_custom_command(TARGET ${EXECUTABLE} POST_BUILD
                    COMMAND ${CMAKE_COMMAND} -E copy_directory
                    ${CMAKE_SOURCE_DIR}/res $<TARGET_FILE_DIR:${EXECUTABLE}>)
 		 
-enable_testing()
 file(GLOB TEST_SOURCES "tests/*.cpp" "src/*.cpp")
 
 # Rimuovo il main per non dichiararlo 2 volte
@@ -55,4 +54,7 @@ target_link_libraries(${TEST_EXECUTABLE} ${SDL2_LIBRARY})
 target_link_libraries(${TEST_EXECUTABLE} ${CHIPMUNK_LIBRARY})
 target_link_libraries(${TEST_EXECUTABLE} ${SDL2_IMAGE_LIBRARY})
 
-add_test(AllTestsInBlocky ${TEST_EXECUTABLE})
+
+include(CTest)
+enable_testing()
+add_test(unit ${TEST_EXECUTABLE})
