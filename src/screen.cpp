@@ -56,7 +56,7 @@ int Screen::init(unsigned int width, unsigned height) {
     }
   }
   ResourceManager& rm = ResourceManager::instance();
-  texture = ResourceManager::loadTexture("img.jpg");
+  texture = ResourceManager::loadTexture("texture.png");
   LOG(DEBUG) << "Init Screen complete";
   return 0;
 }

@@ -36,6 +36,10 @@ add_custom_command(TARGET ${EXECUTABLE} POST_BUILD
                    COMMAND ${CMAKE_COMMAND} -E copy_directory
                    ${CMAKE_SOURCE_DIR}/config $<TARGET_FILE_DIR:${EXECUTABLE}>)
 
+add_custom_command(TARGET ${EXECUTABLE} POST_BUILD
+                   COMMAND ${CMAKE_COMMAND} -E copy_directory
+                   ${CMAKE_SOURCE_DIR}/res $<TARGET_FILE_DIR:${EXECUTABLE}>)
+		 
 enable_testing()
 file(GLOB TEST_SOURCES "tests/*.cpp" "src/*.cpp")
 

@@ -31,7 +31,7 @@ int Game::init(tinyxml2::XMLNode *node) {
     return 1;
   }
 
-  IMG_Init(IMG_INIT_JPG);
+  IMG_Init(IMG_INIT_PNG | IMG_INIT_JPG);
   
   if(0 != ServiceLocator::getScreen()->init(width, height)) {
     LOG(ERROR) << "Something went wrong with Screen init...";
