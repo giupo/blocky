@@ -47,7 +47,7 @@ int blocky_main(int argc, char **argv) {
 
   ServiceLocator::getComponentFactory()->init();
 
-  Game g;
+  Game g(true, 60);
 
   if(g.init(pRoot)) {
     LOG(ERROR) << "Cannot init game";

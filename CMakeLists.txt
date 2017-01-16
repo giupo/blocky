@@ -18,18 +18,19 @@ include(FindGTest)
 include_directories(include)
 
 find_package(SDL2 REQUIRED)
-#find_package(SDL_image REQUIRED)
+find_package(SDL2_IMAGE REQUIRED)
 find_package(Chipmunk REQUIRED)
 
 include_directories(${SDL2_INCLUDE_DIR})
 include_directories(${CHIPMUNK_INCLUDE_DIR})
-# include_directories(${SDL_image_INCLUDE_DIR})
+include_directories(${SDL2_IMAGE_INCLUDE_DIR})
 
 file(GLOB SOURCES "src/*.cpp")
 
 add_executable(${EXECUTABLE} ${SOURCES})
 target_link_libraries(${EXECUTABLE} ${SDL2_LIBRARY})
 target_link_libraries(${EXECUTABLE} ${CHIPMUNK_LIBRARY})
+target_link_libraries(${EXECUTABLE} ${SDL2_IMAGE_LIBRARY})
 
 add_custom_command(TARGET ${EXECUTABLE} POST_BUILD
                    COMMAND ${CMAKE_COMMAND} -E copy_directory
@@ -44,7 +45,10 @@ list(REMOVE_ITEM TEST_SOURCES "${CMAKE_SOURCE_DIR}/src/main.cpp")
 find_package(GTest REQUIRED)
 include_directories(${GTEST_INCLUDE_DIRS})
 add_executable(${TEST_EXECUTABLE} ${TEST_SOURCES})
+
 target_link_libraries(${TEST_EXECUTABLE} ${GTEST_BOTH_LIBRARIES})
 target_link_libraries(${TEST_EXECUTABLE} ${SDL2_LIBRARY})
 target_link_libraries(${TEST_EXECUTABLE} ${CHIPMUNK_LIBRARY})
+target_link_libraries(${TEST_EXECUTABLE} ${SDL2_IMAGE_LIBRARY})
+
 add_test(AllTestsInBlocky ${TEST_EXECUTABLE})

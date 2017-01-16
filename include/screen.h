@@ -8,14 +8,17 @@ class Screen {
 private:
   SDL_Window* window;
   SDL_Renderer* renderer;
-  SDL_Surface* screenSurface;
+  SDL_Texture* texture;
   unsigned int width_, height_;
   
 public:
   Screen(): width_(0), height_(0) {
     window = nullptr;
     renderer = nullptr;
-    screenSurface = nullptr;
+  }
+
+  SDL_Renderer* getRenderer() {
+    return renderer;
   }
   
   void setWidth(unsigned int width) {
@@ -34,21 +37,24 @@ public:
     return height_;
   }
 
-  SDL_Surface* getScreenSurface() {
-    return screenSurface;
-  }
-  
   int init(unsigned int width, unsigned int height);
+  
   void update();
 
   ~Screen() {
     LOG(DEBUG) << "Destroy Screen";
-    if(renderer) {
+    SDL_DestroyTexture(texture);
+    if(nullptr != renderer) {
       SDL_DestroyRenderer(renderer);
     }
-    if(window) {
+
+    if(nullptr != window) {
       SDL_DestroyWindow(window);
     }
+
+    window = nullptr;
+    renderer = nullptr;    
+
     LOG(DEBUG) << "Screen destroyed";
   }
 };
