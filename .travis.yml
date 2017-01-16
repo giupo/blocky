@@ -1,10 +1,29 @@
 # Enable C++ support
 language: cpp
 # Compiler selection
+sudo: required
+dist: trusty
+
 compiler:
   - clang
   - gcc
+
+addons:
+  apt:
+    sources:
+    # add PPAs with more up-to-date toolchains
+    - ubuntu-toolchain-r-test
+    - llvm-toolchain-precise-3.6
+    packages:
+    # install toolchains
+    - gcc-5
+    - g++-5
+    - clang-3.6
+
+
+
 # Build steps
+
 script:
   - mkdir build
   - cd build
