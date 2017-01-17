@@ -1,5 +1,3 @@
 #include "user_events.h"
 
-#include "easylogging++.h"
-
-Uint32 GameEvents::DIOPORCO;
+Uint32 GameEvents::CHANGE_STATE;

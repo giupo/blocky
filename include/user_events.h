@@ -6,12 +6,12 @@
 
 class GameEvents {
 public:
-  static Uint32 DIOPORCO;
+  static Uint32 CHANGE_STATE;
   static int setupEvents() {
 
-    GameEvents::DIOPORCO = SDL_RegisterEvents(1);
-    LOG(INFO) << "Registered Event (" << GameEvents::DIOPORCO << ")";
-    if (GameEvents::DIOPORCO == ((Uint32)-1)){
+    GameEvents::CHANGE_STATE = SDL_RegisterEvents(1);
+    LOG(INFO) << "Registered Event (" << GameEvents::CHANGE_STATE << ")";
+    if (GameEvents::CHANGE_STATE == ((Uint32)-1)){
       LOG(ERROR) << "Cannot register events: " << SDL_GetError();
       return 1;
     }

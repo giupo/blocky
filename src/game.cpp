@@ -19,8 +19,9 @@ Game::~Game() {
 }
 
 int Game::init(tinyxml2::XMLNode *node) {
+  this->node = node;
   tinyxml2::XMLElement* ele = node->ToElement();
-
+  
   int width = ele->IntAttribute("width");
   int height = ele->IntAttribute("height");
 
@@ -69,8 +70,9 @@ int Game::loop() {
         quit = true;
       }
 
-      if ( event.type >= GameEvents::DIOPORCO ) {
+      if ( event.type >= GameEvents::CHANGE_STATE ) {
         LOG(DEBUG) << "Eddaglie!";
+        this->changeState((GameState*) event.user.data1);
       }
       
       if( event.type == SDL_KEYDOWN ) {
@@ -83,11 +85,24 @@ int Game::loop() {
         if( event.key.keysym.sym == SDLK_q ) {
           quit = true;
         }
+
+        if( event.key.keysym.sym == SDLK_w ) {
+          GameState* state = new DoNothingState();
+          state->init();
+          this->requestState(state);
+        }
+
+        if ( event.key.keysym.sym == SDLK_s) {
+          MenuGameState* state = new MenuGameState();
+          state->init(this->node);
+          this->requestState(state);
+        }
       }
     }
 
     state->update();
     ServiceLocator::getScreen()->update();
+
     //If we want to cap the frame rate
     
     unsigned int elapsed = timer.get_ticks() - tick;
@@ -100,4 +115,14 @@ int Game::loop() {
   }
  
   return 0;
+}
+
+
+void Game::requestState(GameState* state) {
+  SDL_Event changeEvent;
+  SDL_memset(&changeEvent, 0, sizeof(changeEvent));
+  changeEvent.type = GameEvents::CHANGE_STATE;
+  changeEvent.user.data1 = (void*) state;
+  changeEvent.user.data2 = 0;
+  SDL_PushEvent(&changeEvent);
 }

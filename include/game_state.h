@@ -4,6 +4,7 @@
 #include <SDL2/SDL.h>
 
 #include "tinyxml2.h"
+#include "easylogging++.h"
 
 class GameState {
 public:
@@ -11,12 +12,13 @@ public:
   virtual void init(tinyxml2::XMLNode* configNode) {}
   virtual void update() =0;
   virtual void shutdown() {
+    LOG(INFO) << "Shutting down state";
   }
 };
 
 class DoNothingState: public GameState {
 public:
-  virtual void update() {}
+  virtual void update();
 };
 
 class MenuGameState: public GameState {

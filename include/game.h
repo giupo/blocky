@@ -15,12 +15,14 @@ private:
   bool cap;
   Timer timer;
   GameState* state;
+  tinyxml2::XMLNode *node;
 public:
   Game(bool cap_, unsigned int fps_): cap(cap_), quit(false), fps(fps_), timer() {
     state = nullptr;
   }
                                
   ~Game();
+  void requestState(GameState* state);
   void changeState(GameState* other_state);
   int init(tinyxml2::XMLNode *node);
   int loop();
