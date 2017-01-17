@@ -5,7 +5,6 @@ sudo: required
 dist: trusty
 
 compiler:
-  - clang
   - gcc
 
 addons:
@@ -36,4 +35,4 @@ before_install:
 script:
   - mkdir build
   - cd build
-  - cmake .. && make test
+  - cmake .. && make && make test
