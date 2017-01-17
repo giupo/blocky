@@ -8,7 +8,6 @@ class Screen {
 private:
   SDL_Window* window;
   SDL_Renderer* renderer;
-  SDL_Texture* texture;
   unsigned int width_, height_;
   
 public:
@@ -43,7 +42,7 @@ public:
 
   ~Screen() {
     LOG(DEBUG) << "Destroy Screen";
-    SDL_DestroyTexture(texture);
+
     if(nullptr != renderer) {
       SDL_DestroyRenderer(renderer);
     }

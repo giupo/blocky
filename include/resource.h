@@ -55,15 +55,15 @@ public:
     SDL_Surface* not_optimized = IMG_Load(path);
     SDL_Texture* texture = NULL;
     if( NULL == not_optimized ) {
-      LOG(ERROR) << "Unable to load image " << path		\
-		 << "! SDL_image Error:" << IMG_GetError();
+      LOG(ERROR) << "Unable to load image " << path         \
+                 << "! SDL_image Error:" << IMG_GetError();
     } else {
       //Create texture from surface pixels
       SDL_Renderer* renderer = ServiceLocator::getScreen()->getRenderer();
       texture = SDL_CreateTextureFromSurface( renderer, not_optimized );
       if( NULL == texture ) {
-	LOG(ERROR) << "Unable to create texture from " << path	\
-		   << "! SDL Error: " << SDL_GetError();
+        LOG(ERROR) << "Unable to create texture from " << path	\
+                   << "! SDL Error: " << SDL_GetError();
       }
       //Get rid of old loaded surface
       SDL_FreeSurface( not_optimized );

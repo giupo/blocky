@@ -8,7 +8,6 @@
 
 #include "tinyxml2.h"
 #include "service_locator.h"
-#include "resource.h"
 
 
 int Screen::init(unsigned int width, unsigned height) {
@@ -40,34 +39,27 @@ int Screen::init(unsigned int width, unsigned height) {
   
   window = SDL_CreateWindow("Blocky", SDL_WINDOWPOS_UNDEFINED,
                             SDL_WINDOWPOS_UNDEFINED,
-			    width_, height_,
+                            width_, height_,
                             SDL_WINDOW_SHOWN);
   if(window == NULL) {
-    LOG(ERROR) << "Window could not be created! SDL Error: " << SDL_GetError();
+    LOG(ERROR) << "Window could not be created! SDL Error: " << \
+      SDL_GetError();
     return -1;
   } else {
-    // screenSurface = SDL_GetWindowSurface(window);
-    // Create renderer for window
-    renderer = SDL_CreateRenderer(window, -1, SDL_RENDERER_ACCELERATED );
-    
+    renderer = SDL_CreateRenderer( window, -1, SDL_RENDERER_ACCELERATED );    
     if(renderer == NULL) {
-      LOG(ERROR) << "Renderer could not be created! SDL Error: " << SDL_GetError();
+      LOG(ERROR) << "Renderer could not be created! SDL Error: " << \
+        SDL_GetError();
       return -1;
     }
   }
-  ResourceManager& rm = ResourceManager::instance();
-  texture = ResourceManager::loadTexture("texture.png");
+
+  
   LOG(DEBUG) << "Init Screen complete";
   return 0;
 }
 
 void Screen::update() {
-  //Clear screen
-  SDL_RenderClear( renderer );
-  
-  //Render texture to screen
-  SDL_RenderCopy( renderer, texture, NULL, NULL );
-  
   //Update screen
   SDL_RenderPresent( renderer );
 }
