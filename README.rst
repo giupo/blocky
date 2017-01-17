@@ -2,7 +2,8 @@
 Blocky
 ******
 
-[![Build Status](https://api.travis-ci.org/giupo/blocky.svg?branch=master)](https://travis-ci.org/giupo/blocky)
+.. image:: https://travis-ci.org/giupo/blocky.svg?branch=master
+    :target: https://travis-ci.org/giupo/blocky
 
 Simple game for learning SDL2 && Chimpunk
 
