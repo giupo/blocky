@@ -12,7 +12,7 @@ class GameState {
 public:
   virtual void init() {}
   virtual void init(tinyxml2::XMLNode* configNode) {}
-
+  virtual ~GameState() {}
  
   virtual void render() =0;
 
@@ -30,6 +30,9 @@ class DoNothingState: public GameState {
 private:
   SDL_Renderer* renderer;
 public:
+
+  virtual ~DoNothingState() {}
+  
   virtual void init() {
     renderer = ServiceLocator::getScreen()->getRenderer();
   }
@@ -45,6 +48,7 @@ private:
   SDL_Texture* texture;
   SDL_Renderer* renderer;
 public:
+  virtual ~MenuGameState() {}
   virtual void init(tinyxml2::XMLNode *configNode);
   virtual void render();
   virtual void update();
@@ -55,6 +59,7 @@ private:
   cpSpace* space;
   SDL_Renderer* renderer;
 public:
+  virtual ~SinglePlayerGameState() {}
   virtual void init(tinyxml2::XMLNode *configNode);
   virtual void update();
   virtual void shutdown();
