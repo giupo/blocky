@@ -59,7 +59,7 @@ int Screen::init(unsigned int width, unsigned height) {
   return 0;
 }
 
-void Screen::update() {
-  //Update screen
+void Screen::render() {
+  LOG(DEBUG) << "Update screen";
   SDL_RenderPresent( renderer );
 }

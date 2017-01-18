@@ -25,6 +25,7 @@ public:
   void requestState(GameState* state);
   void changeState(GameState* other_state);
   int init(tinyxml2::XMLNode *node);
+  int processMessages();
   int loop();
 };
 

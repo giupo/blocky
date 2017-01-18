@@ -38,7 +38,7 @@ public:
 
   int init(unsigned int width, unsigned int height);
   
-  void update();
+  void render();
 
   ~Screen() {
     LOG(DEBUG) << "Destroy Screen";
