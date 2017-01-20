@@ -29,13 +29,12 @@ using config4cpp::Configuration;
  */
 
 int blocky_main(int argc, char **argv) {
-  Configuration * cfg = Configuration::create();
- 
   //Setup Service Locator:
   ServiceLocator::provide(new ComponentFactory());
   ServiceLocator::provide(new MessageQueue());
   ServiceLocator::provide(new ActorFactory());
   ServiceLocator::provide(new Screen());
+  ServiceLocator::provide(Configuration::create());
   // Loading XML config file
   // TODO: Deve essere sostituito con un ResourceFile unico
   XMLDocument xmlDoc;

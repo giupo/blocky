@@ -1,6 +1,8 @@
 #ifndef __SERVICE_LOCATOR_H__
 #define __SERVICE_LOCATOR_H__
 
+#include <config4cpp/Configuration.h>
+
 #include "message_queue.h"
 #include "actor_factory.h"
 #include "easylogging++.h"
@@ -9,6 +11,8 @@
 // #include "resource.h"
 
 // forward declaration
+
+using config4cpp::Configuration;
 
 /**
  * @brief Class providing Factories and "singletons" (not-singletons)
@@ -81,10 +85,18 @@ public:
   static ResourceManager* getResourceManager() {
     return resourceManager_;
     }*/
-  
+
+  static void provide(Configuration* configuration) {
+    configuration_ = configuration;
+  }
+
+  static Configuration* getConfiguration() {
+    return configuration_;
+  }
+
   static void shutdown() {
     LOG(DEBUG) << "ServiceLocator shutdown started";
-
+    
     if (actorFactory_) {
       delete actorFactory_;
       actorFactory_ = nullptr;
@@ -109,6 +121,10 @@ public:
       delete resourceManager_;
       resourceManager_ = nullptr;
       }*/
+
+    if (configuration_ != nullptr) {
+      configuration_->destroy();
+    }
     
     LOG(DEBUG) << "ServiceLocator shutdown ended";
   }
@@ -118,6 +134,8 @@ public:
   static ActorFactory* actorFactory_;
   static ComponentFactory* componentFactory_;
   static Screen* screen_;
+  static Configuration* configuration_;
+  
   //static ResourceManager* resourceManager_;
 };
 
