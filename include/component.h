@@ -10,7 +10,7 @@
 typedef unsigned long ComponentId;
 
 class BComponent {
- private:
+private:
   ComponentId id;
 public:
 

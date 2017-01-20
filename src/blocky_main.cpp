@@ -3,6 +3,8 @@
 #include <SDL2/SDL.h>
 #include <chipmunk.h>
 
+#include <config4cpp/Configuration.h>
+
 #if defined(__LINUX__) || defined(__APPLE__)
 #include <csignal>
 #endif
@@ -18,14 +20,17 @@
 #include "actor_factory.h"
 #include "service_locator.h"
 #include "screen.h"
+
 using namespace tinyxml2;
+using config4cpp::Configuration;
 
 /**
  * @brief App main entry
  */
 
 int blocky_main(int argc, char **argv) {
-
+  Configuration * cfg = Configuration::create();
+ 
   //Setup Service Locator:
   ServiceLocator::provide(new ComponentFactory());
   ServiceLocator::provide(new MessageQueue());

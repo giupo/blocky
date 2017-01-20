@@ -16,6 +16,8 @@ include(FindPackageHandleStandardArgs)
 include(FindGTest)
 
 include_directories(include)
+# submodules
+include_directories(deps/config4cpp/include)
 
 find_package(SDL2 REQUIRED)
 find_package(SDL2_image REQUIRED)
@@ -25,22 +27,33 @@ include_directories(${SDL2_INCLUDE_DIR})
 include_directories(${CHIPMUNK_INCLUDE_DIR})
 include_directories(${SDL2_IMAGE_INCLUDE_DIR})
 
-file(GLOB SOURCES "src/*.cpp")
+file(GLOB SOURCES "src/*.cpp" "${PROJECT_SOURCE_DIR}/deps/config4cpp/src/*.cpp")
+list(REMOVE_ITEM SOURCES
+  "${PROJECT_SOURCE_DIR}/deps/config4cpp/src/config2cpp-main.cpp"
+  "${PROJECT_SOURCE_DIR}/deps/config4cpp/src/config2cpp-nocheck-main.cpp"
+  "${PROJECT_SOURCE_DIR}/deps/config4cpp/src/config4cpp.cpp")
 
+# MESSAGE( STATUS "SOURCES: " ${SOURCES} )
 add_executable(${EXECUTABLE} ${SOURCES})
+
 target_link_libraries(${EXECUTABLE} ${SDL2_LIBRARY})
 target_link_libraries(${EXECUTABLE} ${CHIPMUNK_LIBRARY})
 target_link_libraries(${EXECUTABLE} ${SDL2_IMAGE_LIBRARY})
 
 add_custom_command(TARGET ${EXECUTABLE} POST_BUILD
-                   COMMAND ${CMAKE_COMMAND} -E copy_directory
-                   ${CMAKE_SOURCE_DIR}/config $<TARGET_FILE_DIR:${EXECUTABLE}>)
+  COMMAND ${CMAKE_COMMAND} -E copy_directory
+  ${CMAKE_SOURCE_DIR}/config $<TARGET_FILE_DIR:${EXECUTABLE}>)
 
 add_custom_command(TARGET ${EXECUTABLE} POST_BUILD
-                   COMMAND ${CMAKE_COMMAND} -E copy_directory
-                   ${CMAKE_SOURCE_DIR}/res $<TARGET_FILE_DIR:${EXECUTABLE}>)
-		 
-file(GLOB TEST_SOURCES "tests/*.cpp" "src/*.cpp")
+  COMMAND ${CMAKE_COMMAND} -E copy_directory
+  ${CMAKE_SOURCE_DIR}/res $<TARGET_FILE_DIR:${EXECUTABLE}>)
+
+file(GLOB TEST_SOURCES "tests/*.cpp" "src/*.cpp"
+  "${PROJECT_SOURCE_DIR}/deps/config4cpp/src/*.cpp")
+list(REMOVE_ITEM TEST_SOURCES
+  "${PROJECT_SOURCE_DIR}/deps/config4cpp/src/config2cpp-main.cpp"
+  "${PROJECT_SOURCE_DIR}/deps/config4cpp/src/config2cpp-nocheck-main.cpp"
+  "${PROJECT_SOURCE_DIR}/deps/config4cpp/src/config4cpp.cpp")
 
 # Rimuovo il main per non dichiararlo 2 volte
 list(REMOVE_ITEM TEST_SOURCES "${CMAKE_SOURCE_DIR}/src/main.cpp")
@@ -53,7 +66,6 @@ target_link_libraries(${TEST_EXECUTABLE} ${GTEST_BOTH_LIBRARIES})
 target_link_libraries(${TEST_EXECUTABLE} ${SDL2_LIBRARY})
 target_link_libraries(${TEST_EXECUTABLE} ${CHIPMUNK_LIBRARY})
 target_link_libraries(${TEST_EXECUTABLE} ${SDL2_IMAGE_LIBRARY})
-
 
 include(CTest)
 enable_testing()

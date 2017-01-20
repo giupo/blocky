@@ -54,6 +54,7 @@ public:
   virtual void update();
 };
 
+
 class SinglePlayerGameState: public GameState {
 private:
   cpSpace* space;
