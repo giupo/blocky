@@ -1,4 +1,4 @@
-cmake_minimum_required(VERSION 3.0.0 FATAL_ERROR)
+cmake_minimum_required(VERSION 3.1.0 FATAL_ERROR)
 
 set(CMAKE_BUILD_TYPE Debug)
 
@@ -8,6 +8,11 @@ set(TEST_EXECUTABLE test_blocky)
 project(${EXECUTABLE})
 
 set(DEPS ${PROJECT_SOURCE_DIR}/deps)
+
+message("Your C++ compiler supports these C++ features:")
+foreach(i ${CMAKE_CXX_COMPILE_FEATURES})
+  message("${i}")
+endforeach()
 
 macro(use_cxx11)
   if (CMAKE_VERSION VERSION_LESS "3.1")
@@ -110,6 +115,9 @@ file(GLOB SOURCES "src/*.cpp")
 
 add_executable(${EXECUTABLE} ${SOURCES})
 
+set_property(TARGET ${EXECUTABLE} PROPERTY CXX_STANDARD 11)
+set_property(TARGET ${EXECUTABLE} PROPERTY CXX_STANDARD_REQUIRED ON)
+
 add_dependencies(${EXECUTABLE} spdlog)
 add_dependencies(${EXECUTABLE} Chipmunk2D)
 add_dependencies(${EXECUTABLE} config4cpp)
@@ -157,6 +165,9 @@ ExternalProject_Add(
 
 
 add_executable(${TEST_EXECUTABLE} ${TEST_SOURCES})
+
+set_property(TARGET ${TEST_EXECUTABLE} PROPERTY CXX_STANDARD 11)
+set_property(TARGET ${TEST_EXECUTABLE}  PROPERTY CXX_STANDARD_REQUIRED ON)
 
 add_dependencies(${TEST_EXECUTABLE} googletest)
 add_dependencies(${TEST_EXECUTABLE} spdlog)
