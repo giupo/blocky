@@ -17,6 +17,11 @@ matrix:
             - ubuntu-toolchain-r-test
           packages:
             - g++-5
+	    - libsdl2-dev
+	    - libsdl2-image-dev
+	    - libsdl2-mixer-dev
+	    - libsdl2-net-dev
+	    - libsdl2-ttf-dev
       env:
          - MATRIX_EVAL="CC=gcc-5 && CXX=g++-5"
 
