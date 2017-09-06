@@ -1,3 +1,6 @@
 [submodule "deps/config4cpp"]
 	path = deps/config4cpp
 	url = https://github.com/config4star/config4cpp
+[submodule "deps/googletest"]
+	path = deps/googletest
+	url = https://github.com/google/googletest
