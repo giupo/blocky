@@ -1,22 +1,30 @@
 #include "game_state.h"
 
-#include "tinyxml2.h"
+#include <config4cpp/Configuration.h>
+
 #include "resource.h"
 #include "service_locator.h"
 #include "user_events.h"
-#include "chipmunk.h"
+#include "chipmunk/chipmunk.h"
+#include "world.h"
+#include "spdlog/spdlog.h"
 
-void MenuGameState::init(tinyxml2::XMLNode *configNode) {
+using config4cpp::Configuration;
+
+
+void MenuGameState::init(Configuration* cfg) {
   this->texture = ResourceManager::loadTexture("texture.png");
   if (this->texture == NULL) {
-    LOG(ERROR) << "Texture is Null";
+    spdlog::get("main")->error("Texture is Null");
   }
   this->renderer = ServiceLocator::getScreen()->getRenderer();
 }
 
+
 void MenuGameState::update() {
   this->render();
 }
+
 
 void MenuGameState::render() {
   //Clear screen
@@ -25,27 +33,31 @@ void MenuGameState::render() {
   SDL_RenderCopy( renderer, texture, NULL, NULL );
 }
 
-void SinglePlayerGameState::init(tinyxml2::XMLNode *configNode) {
-  LOG(DEBUG) << "SinglePlayerGameState.init";
+
+void SinglePlayerGameState::init(Configuration* cfg) {
+  spdlog::get("main")->debug("SinglePlayerGameState.init");
   this->renderer = ServiceLocator::getScreen()->getRenderer();
-  space = cpSpaceNew();
-  cpSpaceSetGravity(space, cpv(.0,.0));
+  world = new World();
+  world->init(cfg);
 }
+
 
 void SinglePlayerGameState::update() {
-  cpSpaceStep(space, 1.0f/60.0f);
-  this->render();
+  world->update();
 }
+
 
 void SinglePlayerGameState::render(){
-  LOG(DEBUG) << "SinglePlayerGameState.render";
-  
+  spdlog::get("main")->debug("SinglePlayerGameState.render");
   SDL_RenderClear( renderer );
-  //Render texture to screen
-  //SDL_RenderCopy( renderer, texture, NULL, NULL );
 }
 
+
 void SinglePlayerGameState::shutdown() {
-  LOG(DEBUG) << "SinglePlayerGameState.shutdown";
-  cpSpaceFree(space);
+  spdlog::get("main")->debug("SinglePlayerGameState.shutdown");
+  if (nullptr != world) {
+    world->shutdown();
+    delete world;
+    world = nullptr;
+  }
 }

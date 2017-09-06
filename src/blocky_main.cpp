@@ -1,7 +1,7 @@
 #include <iostream>
 
 #include <SDL2/SDL.h>
-#include <chipmunk.h>
+#include <chipmunk/chipmunk.h>
 
 #include <config4cpp/Configuration.h>
 
@@ -13,15 +13,15 @@
 
 #include "blocky_main.h"
 #include "game.h"
-#include "tinyxml2.h"
+
 #include "blocky_macros.h"
-#include "easylogging++.h"
+
 #include "component_factories.h"
 #include "actor_factory.h"
 #include "service_locator.h"
 #include "screen.h"
+#include "spdlog/spdlog.h"
 
-using namespace tinyxml2;
 using config4cpp::Configuration;
 
 /**
@@ -35,28 +35,14 @@ int blocky_main(int argc, char **argv) {
   ServiceLocator::provide(new ActorFactory());
   ServiceLocator::provide(new Screen());
   ServiceLocator::provide(Configuration::create());
-  // Loading XML config file
-  // TODO: Deve essere sostituito con un ResourceFile unico
-  XMLDocument xmlDoc;
-  XMLError eResult = xmlDoc.LoadFile("config.xml");
-  XMLCheckResult(eResult);
-  
-  LOG(DEBUG) << "Hello!!!";
-
-  XMLNode* pRoot = xmlDoc.FirstChild();
-  if (nullptr == pRoot) {
-    LOG(ERROR) << "XML root element is nullptr";
-    return XML_ERROR_FILE_READ_ERROR;
-  }
-
   ServiceLocator::getComponentFactory()->init();
 
-  Game g(true, 60);
+  Game g(true, 120);
 
-  if(g.init(pRoot)) {
-    LOG(ERROR) << "Cannot init game";
+  Configuration* cfg = ServiceLocator::getConfiguration();
+  if(g.init(cfg)) {
+    spdlog::get("main")->error("Cannot init game with current configuration");
   }
-
   int rc = g.loop();
   return rc;
 }

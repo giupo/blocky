@@ -9,7 +9,7 @@
 #include "actor.h"
 #include "component_factories.h"
 #include "actor_factory.h"
-#include "easylogging++.h"
+#include "spdlog/spdlog.h"
 #include "user_events.h"
 
 Game::~Game() {  
@@ -27,17 +27,15 @@ Game::~Game() {
  * @return 0 for success, anything else for failure
  */
 
-int Game::init(tinyxml2::XMLNode *node) {
-  this->node = node;
-  tinyxml2::XMLElement* ele = node->ToElement();
+int Game::init(Configuration* cfg) {
+  unsigned int width = 640; 
+  unsigned int height = 480;
+  auto log = spdlog::get("main");
   
-  int width = ele->IntAttribute("width");
-  int height = ele->IntAttribute("height");
-
-  LOG(DEBUG) << "[XML] width: " << width << ", height: " << height;
+  log->debug("[XML] width: {}, height: {}", width, height);
 
   if(SDL_Init(SDL_INIT_EVERYTHING) < 0) {
-    LOG(ERROR) << "Cannot init SDL: " << SDL_GetError();
+    log->error("Cannot init SDL: {}", SDL_GetError());
     return 1;
   }
 
@@ -49,11 +47,11 @@ int Game::init(tinyxml2::XMLNode *node) {
   IMG_Init(IMG_INIT_PNG | IMG_INIT_JPG);
 
   if(0 != ServiceLocator::getScreen()->init(width, height)) {
-    LOG(ERROR) << "Something went wrong with Screen init...";
+    log->error("Something went wrong with Screen init...");
   };
 
   GameState* menu = new MenuGameState();
-  menu->init(node);
+  menu->init();
   this->changeState(menu);
   return 0;
 }
@@ -76,17 +74,18 @@ void Game::changeState(GameState* other_state) {
 /** 
  * @brief Main game loop
  * 
- * 
  * @return 0 if no errors are found, !=0 otherwise 
  */
 
 int Game::loop() {
   timer.start();
   quit = false;
+  Screen* screen = ServiceLocator::getScreen();
   while(!quit) {
     processMessages();
     state->update();
-    ServiceLocator::getScreen()->render();
+    state->render();
+    screen->render();
   }
   return 0;
 }
@@ -116,23 +115,24 @@ void Game::requestState(GameState* state) {
 
 int Game::processMessages() {
   SDL_Event event;
+  auto log = spdlog::get("main");
   while( SDL_PollEvent( &event ) != 0 ) {
       
     //User requests quit
     if( event.type == SDL_QUIT ) {
-      LOG(DEBUG) << "Got a QUIT message";
+      log->debug("Got a QUIT message");
       quit = true;
     }
     
     if ( event.type >= GameEvents::CHANGE_STATE ) {
-      LOG(DEBUG) << "Change State!";
+      log->debug("Change State!");
       this->changeState((GameState*) event.user.data1);
     }
     
     if( event.type == SDL_KEYDOWN ) {
       if( event.key.keysym.sym == SDLK_SPACE ||     \
           event.key.keysym.sym == SDLK_RETURN ) {
-        LOG(DEBUG) << "Switching cap";
+        log->debug("Switching cap");
         cap = (!cap) ;
       }
       
@@ -142,19 +142,19 @@ int Game::processMessages() {
       
       if( event.key.keysym.sym == SDLK_w ) {
         GameState* state = new DoNothingState();
-        state->init();
+        state->init(ServiceLocator::getConfiguration());
         this->requestState(state);
       }
       
       if ( event.key.keysym.sym == SDLK_s) {
-        MenuGameState* state = new MenuGameState();
-        state->init(this->node);
+        GameState* state = new MenuGameState();
+        state->init(ServiceLocator::getConfiguration());
         this->requestState(state);
       }
 
       if ( event.key.keysym.sym == SDLK_1 ) {
-        SinglePlayerGameState* state = new SinglePlayerGameState();
-        state->init(this->node);
+        GameState* state = new SinglePlayerGameState();
+        state->init(ServiceLocator::getConfiguration());
         this->requestState(state);
       }
     }

@@ -2,7 +2,7 @@
 #define __SCREEN_H__
 
 #include <SDL2/SDL.h>
-#include "easylogging++.h"
+#include "spdlog/spdlog.h"
 
 class Screen {
 private:
@@ -41,7 +41,7 @@ public:
   void render();
 
   ~Screen() {
-    LOG(DEBUG) << "Destroy Screen";
+    spdlog::get("main")->debug("Destroy Screen");
 
     if(nullptr != renderer) {
       SDL_DestroyRenderer(renderer);
@@ -54,7 +54,7 @@ public:
     window = nullptr;
     renderer = nullptr;    
 
-    LOG(DEBUG) << "Screen destroyed";
+    spdlog::get("main")->debug("Screen destroyed");
   }
 };
 

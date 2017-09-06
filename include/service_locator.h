@@ -5,8 +5,9 @@
 
 #include "message_queue.h"
 #include "actor_factory.h"
-#include "easylogging++.h"
+#include "spdlog/spdlog.h"
 #include "screen.h"
+
 // FIXME: evil circular reference here...
 // #include "resource.h"
 
@@ -95,7 +96,7 @@ public:
   }
 
   static void shutdown() {
-    LOG(DEBUG) << "ServiceLocator shutdown started";
+    spdlog::get("main")->info("ServiceLocator shutdown started");
     
     if (actorFactory_) {
       delete actorFactory_;
@@ -126,7 +127,7 @@ public:
       configuration_->destroy();
     }
     
-    LOG(DEBUG) << "ServiceLocator shutdown ended";
+    spdlog::get("main")->info("ServiceLocator shutdown ended");
   }
   
  private:

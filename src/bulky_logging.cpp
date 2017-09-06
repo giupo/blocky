@@ -1,22 +1,24 @@
 #include "bulky_logging.h"
-#include "easylogging++.h"
-#include "tinyxml2.h"
 
-INITIALIZE_EASYLOGGINGPP
+#include "spdlog/spdlog.h"
+
+
+/** 
+ * @brief init the logging system
+ */
 
 int bootstrap_logging() {
-  el::Configurations defaultConf;
-  defaultConf.setToDefault();
-  // Values are always std::string
-  defaultConf.set(el::Level::Debug, el::ConfigurationType::Format,
-                  "%datetime %level %msg");
-  defaultConf.set(el::Level::Info, el::ConfigurationType::Format,
-                  "%datetime %level %msg");
-  // default logger uses default configurations
-  el::Loggers::reconfigureLogger("default", defaultConf);
-  LOG(DEBUG) << "Log debug";
-  LOG(INFO) << "Log using default file";
-  LOG(WARNING) << "Warn test";
-  LOG(ERROR) << "Error test";
+  spdlog::set_level(spdlog::level::debug);
+  spdlog::stdout_color_mt("main");
+  return 0;
+}
+
+
+/**
+ * @brief closes and release all loggers
+ */
+
+int close_logging() {
+  spdlog::drop_all();
   return 0;
 }

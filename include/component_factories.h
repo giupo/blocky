@@ -3,7 +3,6 @@
 
 #include <string>
 #include <map>
-#include "easylogging++.h"
 #include "component.h"
 
 typedef std::string ComponentTypeName; 

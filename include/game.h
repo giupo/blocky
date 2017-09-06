@@ -2,11 +2,13 @@
 #define __GAME_H__
 
 #include <SDL2/SDL.h>
+#include <config4cpp/Configuration.h>
+
 #include "timer.h"
 #include "message_queue.h"
-#include "tinyxml2.h"
-#include "easylogging++.h"
 #include "game_state.h"
+
+using config4cpp::Configuration;
 
 class Game {
 private:
@@ -15,16 +17,16 @@ private:
   bool cap;
   Timer timer;
   GameState* state;
-  tinyxml2::XMLNode *node;
 public:
-  Game(bool cap_, unsigned int fps_): cap(cap_), quit(false), fps(fps_), timer() {
+  Game(bool cap_, unsigned int fps_): \
+    cap(cap_), quit(false), fps(fps_), timer() {
     state = nullptr;
   }
                                
   ~Game();
   void requestState(GameState* state);
   void changeState(GameState* other_state);
-  int init(tinyxml2::XMLNode *node);
+  int init(Configuration* cfg);
   int processMessages();
   int loop();
 };

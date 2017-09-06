@@ -1,5 +1,5 @@
 #include "component_factories.h"
-#include "easylogging++.h"
+#include "spdlog/spdlog.h"
 #include "component.h"
 
 FunctionMap creators_map;
@@ -9,7 +9,7 @@ BComponent* test_me() {
 }
 
 void ComponentFactory::init() {
-  LOG(DEBUG) << "Setting up Creators";
+  spdlog::get("main")->debug("Setting up Creators");
   creators_map.emplace("test_me", &test_me);
-  LOG(DEBUG) << "Setup Creators Completed";  
+  spdlog::get("main")->debug("Setup Creators Completed");
 }

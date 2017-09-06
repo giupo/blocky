@@ -2,17 +2,17 @@
 #define __USER_EVENTS_H__
 
 #include <SDL2/SDL.h>
-#include "easylogging++.h"
+#include "spdlog/spdlog.h"
 
 class GameEvents {
 public:
   static Uint32 CHANGE_STATE;
   static int setupEvents() {
-
+    
     GameEvents::CHANGE_STATE = SDL_RegisterEvents(1);
-    LOG(INFO) << "Registered Event (" << GameEvents::CHANGE_STATE << ")";
+    spdlog::get("main")->info("Registered Event (%s)", GameEvents::CHANGE_STATE);
     if (GameEvents::CHANGE_STATE == ((Uint32)-1)){
-      LOG(ERROR) << "Cannot register events: " << SDL_GetError();
+      spdlog::get("main")->error("Cannot register events: %s", SDL_GetError());
       return 1;
     }
     

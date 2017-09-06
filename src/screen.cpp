@@ -3,7 +3,7 @@
 
 #include "screen.h"
 
-#include "easylogging++.h"
+#include "spdlog/spdlog.h"
 #include "game.h"
 
 #include "tinyxml2.h"
@@ -11,29 +11,28 @@
 
 
 int Screen::init(unsigned int width, unsigned height) {
-  LOG(DEBUG) << "Init Screen";
+  auto log = spdlog::get("main");
+  log->debug("Init Screen");
   width_ = width;
   height_ = height;
   if(width_ == 0 || height_ == 0) {
-    LOG(DEBUG) << "Screen width/height is not set," <<	\
-      "taking all the width available";
+    log->debug("Screen width/height is not set,taking all the width available");
     SDL_DisplayMode current;
     // the 0 here is for the first display available
     int should_be_zero = SDL_GetCurrentDisplayMode(0, &current); 
     if(should_be_zero != 0) {
-      LOG(ERROR) << "Could not get display mode for video display 0: " << \
-        SDL_GetError();
+      log->error("Could not get display mode for video display 0: {}", SDL_GetError());
       return -1;
     }
     
     if(width_ == 0) {
       width_ = current.w;
-      LOG(DEBUG) << "New width: " << width_;
+      log->debug("New width: %d", width_);
     }
     
     if(height_ == 0) {
       height_ = current.h;
-      LOG(DEBUG) << "New height: " << height_;
+      log->debug("New height: %d", height_);
     }
   }
   
@@ -42,24 +41,21 @@ int Screen::init(unsigned int width, unsigned height) {
                             width_, height_,
                             SDL_WINDOW_SHOWN);
   if(window == NULL) {
-    LOG(ERROR) << "Window could not be created! SDL Error: " << \
-      SDL_GetError();
+    log->error("Window could not be created! SDL Error: {}", SDL_GetError());
     return -1;
   } else {
     renderer = SDL_CreateRenderer( window, -1, SDL_RENDERER_ACCELERATED );    
     if(renderer == NULL) {
-      LOG(ERROR) << "Renderer could not be created! SDL Error: " << \
-        SDL_GetError();
+      log->error("Renderer could not be created! SDL Error: {}", SDL_GetError());
       return -1;
     }
   }
-
   
-  LOG(DEBUG) << "Init Screen complete";
+    
+  log->debug("Init Screen complete");
   return 0;
 }
 
 void Screen::render() {
-  LOG(DEBUG) << "Update screen";
   SDL_RenderPresent( renderer );
 }

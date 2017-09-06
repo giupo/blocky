@@ -4,28 +4,27 @@
 #include <actor.h>
 
 class Command {
- public:
+public:
   virtual ~Command() {}
-  virtual void execute(Actor& actor) = 0;
+  virtual void execute(Actor& actor) =0;
 };
 
 class MoveRightCommand : public Command {
- public:
-  virtual void execute(Actor& actor) {
-    
+public:
+  virtual void execute(Actor& actor) {    
   }
-}
-
+};
+  
 class MoveLeftCommand : public Command {
- public:
+public:
   virtual void execute(Actor& actor) { 
   }
-}
+};
 
 class FireCommand : public Command {
- public:
+public:
   virtual void execute(Actor& actor) {   
   }
-}
+};
 
 #endif

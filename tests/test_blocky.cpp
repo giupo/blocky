@@ -2,7 +2,7 @@
 
 #include "component_factories.h"
 #include "service_locator.h"
-
+#include "bulky_logging.h"
 
 TEST (ComponentFactoryInit, InitWorksAsExpected) {
   ServiceLocator::provide(new ComponentFactory());
@@ -12,6 +12,7 @@ TEST (ComponentFactoryInit, InitWorksAsExpected) {
 }
 
 int main(int argc, char **argv) {
+  bootstrap_logging();
   ::testing::InitGoogleTest(&argc, argv);
   return RUN_ALL_TESTS();
 }

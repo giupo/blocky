@@ -7,6 +7,7 @@
 #include "component_factories.h"
 #include "screen.h"
 #include "resource.h"
+#include "spdlog/spdlog.h"
 
 using config4cpp::Configuration;
 
@@ -14,5 +15,6 @@ MessageQueue* ServiceLocator::messageQueue_;
 ActorFactory* ServiceLocator::actorFactory_;
 ComponentFactory* ServiceLocator::componentFactory_;
 Screen* ServiceLocator::screen_;
+
 //ResourceManager* ServiceLocator::resourceManager_;
 Configuration* ServiceLocator::configuration_;
