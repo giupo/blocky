@@ -40,3 +40,4 @@ blocky.exe
 
 # ignore build dir
 build
+deps
