@@ -157,7 +157,7 @@ target_link_libraries(${TEST_EXECUTABLE} ${googletest_LIBRARIES}/libgtest.a)
 target_link_libraries(${TEST_EXECUTABLE} ${SDL2_LIBRARY})
 target_link_libraries(${TEST_EXECUTABLE} ${Chipmunk2D_LIBRARIES}/libchipmunk.a)
 target_link_libraries(${TEST_EXECUTABLE} ${SDL2_IMAGE_LIBRARY})
-target_link_libraries(${EXECUTABLE} ${config4cpp_LIBRARIES}/libconfig4cpp.a)
+target_link_libraries(${TEST_EXECUTABLE} ${config4cpp_LIBRARIES}/libconfig4cpp.a)
 
 include(CTest)
 enable_testing()
