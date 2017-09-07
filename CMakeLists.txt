@@ -95,7 +95,7 @@ ExternalProject_Add(
 set(Chipmunk2D_INCLUDE_DIRS "${DEPS}/lib/Chipmunk2D/include")
 set(Chipmunk2D_LIBRARIES "${DEPS}/lib/Chipmunk2D/lib")
 
-include_directories(${spdlog_INCLUDE_DIRS})
+include_directories(${Chipmunk2D_INCLUDE_DIRS})
 
 # end Chipmunk2D
 
