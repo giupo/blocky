@@ -3,6 +3,7 @@
 
 #include <map>
 #include <string>
+#include <memory>
 
 #include "tinyxml2.h"
 #include "component_factories.h"
