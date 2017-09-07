@@ -10,9 +10,9 @@ public:
   static int setupEvents() {
     
     GameEvents::CHANGE_STATE = SDL_RegisterEvents(1);
-    spdlog::get("main")->info("Registered Event (%s)", GameEvents::CHANGE_STATE);
+    spdlog::get("main")->info("Registered Event ({})", GameEvents::CHANGE_STATE);
     if (GameEvents::CHANGE_STATE == ((Uint32)-1)){
-      spdlog::get("main")->error("Cannot register events: %s", SDL_GetError());
+      spdlog::get("main")->error("Cannot register events: {}", SDL_GetError());
       return 1;
     }
     
