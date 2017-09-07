@@ -40,7 +40,7 @@ addons:
 before_install:
     - eval "${MATRIX_EVAL}"
     # the following is as bad as Satan
-    - sudo apt-get install  libgl1-mesa-dev-lts-utopic
+    - sudo apt-get install libgles2-mesa-dev
     - sudo apt-get install libsdl2-dev libsdl2-image-dev libsdl2-mixer-dev libsdl2-net-dev libsdl2-ttf-dev
 
 # Build steps
