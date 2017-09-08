@@ -1,34 +1,30 @@
-#ifndef __GAME_H__
-#define __GAME_H__
+#ifndef __GAME__
+#define __GAME__
 
-#include <SDL2/SDL.h>
-#include <config4cpp/Configuration.h>
+#include "SDL2/SDL.h"
 
-#include "timer.h"
-#include "message_queue.h"
-#include "game_state.h"
-
-using config4cpp::Configuration;
+#include "config4cpp/Configuration.h"
 
 class Game {
-private:
-  bool quit;
-  unsigned int fps;
-  bool cap;
-  Timer timer;
-  GameState* state;
 public:
-  Game(bool cap_, unsigned int fps_): \
-    cap(cap_), quit(false), fps(fps_), timer() {
-    state = nullptr;
-  }
-                               
-  ~Game();
-  void requestState(GameState* state);
-  void changeState(GameState* other_state);
-  int init(Configuration* cfg);
-  int processMessages();
-  int loop();
+  virtual void init(config4cpp::Configuration* cfg) =0;
+  virtual void loop() =0;
+  virtual void shutdown() =0;
+};
+
+class BlockyGame : public Game {
+private:
+  SDL_Window* window;
+  SDL_Renderer* renderer;
+  SDL_Surface* surface;
+  SDL_Texture* texture;
+  bool running;
+public:
+  BlockyGame(): window(NULL), renderer(NULL), surface(NULL), texture(NULL), running(false) {}
+  virtual ~BlockyGame() {}
+  virtual void init(config4cpp::Configuration* cfg);
+  virtual void loop();
+  virtual void shutdown();  
 };
 
 #endif

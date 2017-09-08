@@ -9,19 +9,14 @@ project(${EXECUTABLE})
 
 set(DEPS ${PROJECT_SOURCE_DIR}/deps)
 
-message("Your C++ compiler supports these C++ features:")
-foreach(i ${CMAKE_CXX_COMPILE_FEATURES})
-  message("${i}")
-endforeach()
-
 macro(use_cxx11)
   if (CMAKE_VERSION VERSION_LESS "3.1")
     if (CMAKE_CXX_COMPILER_ID STREQUAL "GNU")
       set (CMAKE_CXX_FLAGS "-std=gnu++11 ${CMAKE_CXX_FLAGS}")
     else()
       set (CMAKE_CXX_FLAGS "-std=c++11 ${CMAKE_CXX_FLAGS}") 
-    endif ()
-  else ()
+    endif()
+  else()
     set (CMAKE_CXX_STANDARD 11)
   endif ()
 endmacro(use_cxx11)
@@ -78,32 +73,10 @@ set(config4cpp_LIBRARIES "${DEPS}/config4cpp/lib")
 include_directories(${config4cpp_INCLUDE_DIRS})
 # end config4cpp
 
-# Chipmunk2D
-ExternalProject_Add(
-  Chipmunk2D
-  GIT_REPOSITORY "https://github.com/slembcke/Chipmunk2D.git"
-  GIT_TAG "master"
-  
-  UPDATE_COMMAND ""
-  PATCH_COMMAND ""
-  
-  SOURCE_DIR "${DEPS}/Chipmunk2D"
-  CMAKE_ARGS -DCMAKE_INSTALL_PREFIX=${DEPS}/lib/Chipmunk2D -DBUILD_DEMOS=OFF
-  TEST_COMMAND ""
-)
-
-set(Chipmunk2D_INCLUDE_DIRS "${DEPS}/lib/Chipmunk2D/include")
-set(Chipmunk2D_LIBRARIES "${DEPS}/lib/Chipmunk2D/lib")
-
-include_directories(${Chipmunk2D_INCLUDE_DIRS})
-
-# end Chipmunk2D
-
 ############# END LIBS
 
 include_directories(include)
 # submodules
-include_directories(deps/config4cpp/include)
 
 find_package(SDL2 REQUIRED)
 find_package(SDL2_image REQUIRED)
@@ -119,11 +92,9 @@ set_property(TARGET ${EXECUTABLE} PROPERTY CXX_STANDARD 11)
 set_property(TARGET ${EXECUTABLE} PROPERTY CXX_STANDARD_REQUIRED ON)
 
 add_dependencies(${EXECUTABLE} spdlog)
-add_dependencies(${EXECUTABLE} Chipmunk2D)
 add_dependencies(${EXECUTABLE} config4cpp)
 
 target_link_libraries(${EXECUTABLE} ${SDL2_LIBRARY})
-target_link_libraries(${EXECUTABLE} ${Chipmunk2D_LIBRARIES}/libchipmunk.a)
 target_link_libraries(${EXECUTABLE} ${SDL2_IMAGE_LIBRARY})
 target_link_libraries(${EXECUTABLE} ${config4cpp_LIBRARIES}/libconfig4cpp.a)
 
@@ -135,13 +106,7 @@ add_custom_command(TARGET ${EXECUTABLE} POST_BUILD
   COMMAND ${CMAKE_COMMAND} -E copy_directory
   ${CMAKE_SOURCE_DIR}/res $<TARGET_FILE_DIR:${EXECUTABLE}>)
 
-file(GLOB TEST_SOURCES "tests/*.cpp" "src/*.cpp"
-  "${PROJECT_SOURCE_DIR}/deps/config4cpp/src/*.cpp")
-
-list(REMOVE_ITEM TEST_SOURCES
-  "${PROJECT_SOURCE_DIR}/deps/config4cpp/src/config2cpp-main.cpp"
-  "${PROJECT_SOURCE_DIR}/deps/config4cpp/src/config2cpp-nocheck-main.cpp"
-  "${PROJECT_SOURCE_DIR}/deps/config4cpp/src/config4cpp.cpp")
+file(GLOB TEST_SOURCES "tests/*.cpp" "src/*.cpp")
 
 # Rimuovo il main per non dichiararlo 2 volte
 list(REMOVE_ITEM TEST_SOURCES "${CMAKE_SOURCE_DIR}/src/main.cpp")
@@ -160,14 +125,13 @@ ExternalProject_Add(
   SOURCE_DIR "${DEPS}/googletest"
   CMAKE_ARGS -DCMAKE_INSTALL_PREFIX=${DEPS}/lib/googletest
   
-  TEST_COMMAND ""
-)
-
+  TEST_COMMAND "")
 
 add_executable(${TEST_EXECUTABLE} ${TEST_SOURCES})
+############
 
 set_property(TARGET ${TEST_EXECUTABLE} PROPERTY CXX_STANDARD 11)
-set_property(TARGET ${TEST_EXECUTABLE}  PROPERTY CXX_STANDARD_REQUIRED ON)
+set_property(TARGET ${TEST_EXECUTABLE} PROPERTY CXX_STANDARD_REQUIRED ON)
 
 add_dependencies(${TEST_EXECUTABLE} googletest)
 add_dependencies(${TEST_EXECUTABLE} spdlog)
@@ -179,7 +143,6 @@ include_directories(${googletest_INCLUDE_DIRS})
 
 target_link_libraries(${TEST_EXECUTABLE} ${googletest_LIBRARIES}/libgtest.a)
 target_link_libraries(${TEST_EXECUTABLE} ${SDL2_LIBRARY})
-target_link_libraries(${TEST_EXECUTABLE} ${Chipmunk2D_LIBRARIES}/libchipmunk.a)
 target_link_libraries(${TEST_EXECUTABLE} ${SDL2_IMAGE_LIBRARY})
 target_link_libraries(${TEST_EXECUTABLE} ${config4cpp_LIBRARIES}/libconfig4cpp.a)
 

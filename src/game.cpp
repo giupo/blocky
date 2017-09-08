@@ -1,164 +1,44 @@
-#include "game.h"
+#include "Game.h"
 
-#include <SDL2/SDL.h>
-#include <SDL2/SDL_image.h>
+#include "SDL2/SDL.h"
+#include "SDL_image.h"
 
-#include "service_locator.h"
-#include "message_queue.h"
-#include "tinyxml2.h"
-#include "actor.h"
-#include "component_factories.h"
-#include "actor_factory.h"
+#include "config4cpp/Configuration.h"
+#include "config4cpp/ConfigurationException.h"
+
 #include "spdlog/spdlog.h"
-#include "user_events.h"
 
-Game::~Game() {  
-  ServiceLocator::shutdown();
-  IMG_Quit();
-  SDL_Quit();
+void BlockyGame::init(config4cpp::Configuration* cfg) {
+  //Will parse some config.
+  SDL_Init(SDL_INIT_EVERYTHING);
+  window = SDL_CreateWindow("Hello World!", 0, 0, 640, 480, 0);
+  renderer = SDL_CreateRenderer(window, -1, SDL_RENDERER_ACCELERATED);
+  surface = IMG_Load("texture.png");
+  texture = SDL_CreateTextureFromSurface(renderer, surface);
 }
 
-
-/** 
- * @brief initialize the Game
- * 
- * @param node Config Node from XML (to be refactored)
- * 
- * @return 0 for success, anything else for failure
- */
-
-int Game::init(Configuration* cfg) {
-  unsigned int width = 640; 
-  unsigned int height = 480;
-  auto log = spdlog::get("main");
-  
-  log->debug("[XML] width: {}, height: {}", width, height);
-
-  if(SDL_Init(SDL_INIT_EVERYTHING) < 0) {
-    log->error("Cannot init SDL: {}", SDL_GetError());
-    return 1;
-  }
-
-  
-  if(GameEvents::setupEvents() != 0) {
-    return 1;
-  }
-  
-  IMG_Init(IMG_INIT_PNG | IMG_INIT_JPG);
-
-  if(0 != ServiceLocator::getScreen()->init(width, height)) {
-    log->error("Something went wrong with Screen init...");
-  };
-
-  GameState* menu = new MenuGameState();
-  menu->init();
-  this->changeState(menu);
-  return 0;
-}
-
-/** 
- * @brief changes state of the Game
- * 
- * @param other_state 
- */
-
-void Game::changeState(GameState* other_state) {
-  if (this->state != nullptr) {
-    state->shutdown();
-    delete state;
-  }
-  this->state = other_state;
-}
-
-
-/** 
- * @brief Main game loop
- * 
- * @return 0 if no errors are found, !=0 otherwise 
- */
-
-int Game::loop() {
-  timer.start();
-  quit = false;
-  Screen* screen = ServiceLocator::getScreen();
-  while(!quit) {
-    processMessages();
-    state->update();
-    state->render();
-    screen->render();
-  }
-  return 0;
-}
-
-
-/** 
- * @brief Request a different game state throught SDL's queue
- * 
- * @param state state requested (implementing GameState)
- */
-
-void Game::requestState(GameState* state) {
-  SDL_Event changeEvent;
-  SDL_memset(&changeEvent, 0, sizeof(changeEvent));
-  changeEvent.type = GameEvents::CHANGE_STATE;
-  changeEvent.user.data1 = (void*) state;
-  changeEvent.user.data2 = 0;
-  SDL_PushEvent(&changeEvent);
-}
-
-
-/** 
- * @brief Processes messages from queue and input from user
- * 
- * @return an int for future usage (unused so far) 
- */
-
-int Game::processMessages() {
+void BlockyGame::loop() {
+  auto log = spdlog::get("Game");
+  running = true;
   SDL_Event event;
-  auto log = spdlog::get("main");
-  while( SDL_PollEvent( &event ) != 0 ) {
-      
-    //User requests quit
-    if( event.type == SDL_QUIT ) {
-      log->debug("Got a QUIT message");
-      quit = true;
-    }
-    
-    if ( event.type >= GameEvents::CHANGE_STATE ) {
-      log->debug("Change State!");
-      this->changeState((GameState*) event.user.data1);
-    }
-    
-    if( event.type == SDL_KEYDOWN ) {
-      if( event.key.keysym.sym == SDLK_SPACE ||     \
-          event.key.keysym.sym == SDLK_RETURN ) {
-        log->debug("Switching cap");
-        cap = (!cap) ;
-      }
-      
-      if( event.key.keysym.sym == SDLK_q ) {
-        quit = true;
-      }
-      
-      if( event.key.keysym.sym == SDLK_w ) {
-        GameState* state = new DoNothingState();
-        state->init(ServiceLocator::getConfiguration());
-        this->requestState(state);
-      }
-      
-      if ( event.key.keysym.sym == SDLK_s) {
-        GameState* state = new MenuGameState();
-        state->init(ServiceLocator::getConfiguration());
-        this->requestState(state);
-      }
 
-      if ( event.key.keysym.sym == SDLK_1 ) {
-        GameState* state = new SinglePlayerGameState();
-        state->init(ServiceLocator::getConfiguration());
-        this->requestState(state);
+  while (running) {
+    if (SDL_PollEvent(&event)) {
+      if (event.type == SDL_QUIT) {
+	log->debug("got SDL_QUIT message");
+	running = false;
       }
     }
+    SDL_RenderClear(renderer);
+    SDL_RenderCopy(renderer, texture, NULL, NULL);
+    SDL_RenderPresent(renderer);
   }
-  
-  return 0;
+}
+
+void BlockyGame::shutdown() {
+  SDL_DestroyTexture(texture);
+  SDL_DestroyRenderer(renderer);
+  SDL_DestroyWindow(window);
+
+  SDL_Quit();
 }
