@@ -13,15 +13,15 @@ using config4cpp::ConfigurationException;
 
 void bootstrap_logging() {
   Configuration& cfg = ServiceLocator::getConfiguration();
-  int num_systems = cfg.lookupInt("logging", "num_systems");
-
   const char** systems;
   try {
+    int num_systems = cfg.lookupInt("logging", "num_systems");
     cfg.lookupList("logging", "systems", systems, num_systems);
     
     for (int i = 0; i < num_systems; i++) {
       spdlog::stdout_color_mt(systems[i]);
     }
+    
     int level = cfg.lookupInt("logging", "level");
     if (level == 0) {
       spdlog::set_level(spdlog::level::debug);
