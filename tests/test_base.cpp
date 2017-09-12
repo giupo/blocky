@@ -25,3 +25,8 @@ TEST (SquareRootTest, ZeroAndNegativeNos) {
   EXPECT_THROW (square_root (-22.0), std::exception);
   EXPECT_THROW (square_root (-0.000001), std::exception);
 }
+
+int main(int argc, char** argv) {
+  ::testing::InitGoogleTest(&argc, argv);
+  return RUN_ALL_TESTS();
+}

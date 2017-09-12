@@ -4,6 +4,8 @@
 #include "LifeCycle.h"
 #include "SDL2/SDL.h"
 
+#include "Block.h"
+
 class BlockyGame;
 
 class GameState : public Updatable {
@@ -36,10 +38,19 @@ public:
 class SinglePlayerState : public GameState {
   SDL_Texture* background;
   BlockyGame* game;
+  unsigned int score;
+
+  Piece* piece;
+  Piece* nextPiece;
+  
 public:
+
   SinglePlayerState(BlockyGame *game): background(NULL) {
     this->game = game;
+    this->piece = nullptr;
+    this->nextPiece = nullptr;
   }
+  
   // GameState
   virtual ~SinglePlayerState() {}
   virtual void handleInput();

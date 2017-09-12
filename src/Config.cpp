@@ -11,7 +11,7 @@ bool Config::setup() {
   Configuration* cfg = Configuration::create();
 
   try {
-    cfg->parse("config.cfg");
+    cfg->parse("config/config.cfg");
   } catch(const ConfigurationException& ex) {
     std::cout << "Can't parse config.cfg: " << ex.c_str() << std::endl;
     cfg->destroy();

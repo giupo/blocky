@@ -84,9 +84,12 @@ find_package(SDL2_image REQUIRED)
 include_directories(${SDL2_INCLUDE_DIR})
 include_directories(${SDL2_IMAGE_INCLUDE_DIR})
 
-file(GLOB SOURCES "src/*.cpp")
+file(GLOB SOURCES_NO_MAIN "src/*.cpp")
+list(REMOVE_ITEM SOURCES_NO_MAIN "${CMAKE_SOURCE_DIR}/src/main.cpp")
 
-add_executable(${EXECUTABLE} ${SOURCES})
+
+add_library(objects OBJECT ${SOURCES_NO_MAIN})
+add_executable(${EXECUTABLE} $<TARGET_OBJECTS:objects> "${CMAKE_SOURCE_DIR}/src/main.cpp")
 
 set_property(TARGET ${EXECUTABLE} PROPERTY CXX_STANDARD 11)
 set_property(TARGET ${EXECUTABLE} PROPERTY CXX_STANDARD_REQUIRED ON)
@@ -100,16 +103,14 @@ target_link_libraries(${EXECUTABLE} ${config4cpp_LIBRARIES}/libconfig4cpp.a)
 
 add_custom_command(TARGET ${EXECUTABLE} POST_BUILD
   COMMAND ${CMAKE_COMMAND} -E copy_directory
-  ${CMAKE_SOURCE_DIR}/config $<TARGET_FILE_DIR:${EXECUTABLE}>)
+  ${CMAKE_SOURCE_DIR}/config $<TARGET_FILE_DIR:${EXECUTABLE}>/config )
 
 add_custom_command(TARGET ${EXECUTABLE} POST_BUILD
   COMMAND ${CMAKE_COMMAND} -E copy_directory
-  ${CMAKE_SOURCE_DIR}/res $<TARGET_FILE_DIR:${EXECUTABLE}>)
+  ${CMAKE_SOURCE_DIR}/res $<TARGET_FILE_DIR:${EXECUTABLE}>/res)
 
-file(GLOB TEST_SOURCES "tests/*.cpp" "src/*.cpp")
-
-# Rimuovo il main per non dichiararlo 2 volte
-list(REMOVE_ITEM TEST_SOURCES "${CMAKE_SOURCE_DIR}/src/main.cpp")
+###################### TESTS #############################3
+# define vars for exeutables
 
 ##################################
 # Download and install GoogleTest
@@ -127,25 +128,25 @@ ExternalProject_Add(
   
   TEST_COMMAND "")
 
-add_executable(${TEST_EXECUTABLE} ${TEST_SOURCES})
-############
-
-set_property(TARGET ${TEST_EXECUTABLE} PROPERTY CXX_STANDARD 11)
-set_property(TARGET ${TEST_EXECUTABLE} PROPERTY CXX_STANDARD_REQUIRED ON)
-
-add_dependencies(${TEST_EXECUTABLE} googletest)
-add_dependencies(${TEST_EXECUTABLE} spdlog)
-  
 set(googletest_INCLUDE_DIRS "${DEPS}/googletest/googletest/include")
 set(googletest_LIBRARIES "${DEPS}/lib/googletest/lib")
-
 include_directories(${googletest_INCLUDE_DIRS})
-
-target_link_libraries(${TEST_EXECUTABLE} ${googletest_LIBRARIES}/libgtest.a)
-target_link_libraries(${TEST_EXECUTABLE} ${SDL2_LIBRARY})
-target_link_libraries(${TEST_EXECUTABLE} ${SDL2_IMAGE_LIBRARY})
-target_link_libraries(${TEST_EXECUTABLE} ${config4cpp_LIBRARIES}/libconfig4cpp.a)
 
 include(CTest)
 enable_testing()
-add_test(pippo ${TEST_EXECUTABLE})
+
+set(TEST_EXECUTABLES test_blocky test_field test_base)
+foreach(test_exe ${TEST_EXECUTABLES})
+  add_executable(${test_exe} "tests/${test_exe}.cpp" $<TARGET_OBJECTS:objects>)
+  add_dependencies(${test_exe} googletest)
+  add_dependencies(${test_exe} spdlog)
+
+  set_property(TARGET ${test_exe} PROPERTY CXX_STANDARD 11)
+  set_property(TARGET ${test_exe} PROPERTY CXX_STANDARD_REQUIRED ON)
+
+  target_link_libraries(${test_exe} ${googletest_LIBRARIES}/libgtest.a)
+  target_link_libraries(${test_exe} ${SDL2_LIBRARY})
+  target_link_libraries(${test_exe} ${SDL2_IMAGE_LIBRARY})
+  target_link_libraries(${test_exe} ${config4cpp_LIBRARIES}/libconfig4cpp.a)
+  add_test(${test_exe} ${test_exe})
+endforeach(test_exe)
