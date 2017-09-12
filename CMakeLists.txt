@@ -87,8 +87,11 @@ include_directories(${SDL2_IMAGE_INCLUDE_DIR})
 file(GLOB SOURCES_NO_MAIN "src/*.cpp")
 list(REMOVE_ITEM SOURCES_NO_MAIN "${CMAKE_SOURCE_DIR}/src/main.cpp")
 
-
 add_library(objects OBJECT ${SOURCES_NO_MAIN})
+
+add_dependencies(objects spdlog)
+add_dependencies(objects config4cpp)
+
 add_executable(${EXECUTABLE} $<TARGET_OBJECTS:objects> "${CMAKE_SOURCE_DIR}/src/main.cpp")
 
 set_property(TARGET ${EXECUTABLE} PROPERTY CXX_STANDARD 11)
