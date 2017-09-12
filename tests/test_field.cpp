@@ -21,6 +21,5 @@ int main(int argc, char **argv) {
   bootstrap_logging();
   ::testing::InitGoogleTest(&argc, argv);
   atexit(ServiceLocator::shutdown);
-
   return RUN_ALL_TESTS();
 }

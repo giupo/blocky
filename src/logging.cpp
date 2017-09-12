@@ -3,7 +3,7 @@
 #include "logging.h"
 #include "spdlog/spdlog.h"
 
-#include "config4cpp/Configuration.h"
+#includes "config4cpp/Configuration.h"
 #include "config4cpp/ConfigurationException.h"
 /** 
  * @brief init the logging system
@@ -30,7 +30,7 @@ void bootstrap_logging() {
     }
     // spdlog::stdout_color_mt("main");
     // spdlog::stdout_color_mt("Game");
-  } catch( const ConfigurationException& ex) { 
+  } catch( const ConfigurationException& ex) {
     std::cout << "bootstrap logging error: " << ex.c_str() << std::endl;
   }
 }
