@@ -3,7 +3,7 @@
 #include "logging.h"
 #include "spdlog/spdlog.h"
 
-#includes "config4cpp/Configuration.h"
+#include "config4cpp/Configuration.h"
 #include "config4cpp/ConfigurationException.h"
 /** 
  * @brief init the logging system
@@ -28,6 +28,7 @@ void bootstrap_logging() {
     } else {
       spdlog::set_level(spdlog::level::info);
     }
+    
     // spdlog::stdout_color_mt("main");
     // spdlog::stdout_color_mt("Game");
   } catch( const ConfigurationException& ex) {
