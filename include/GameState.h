@@ -3,8 +3,9 @@
 
 #include "LifeCycle.h"
 #include "SDL2/SDL.h"
-
+#include "Field.h"
 #include "Block.h"
+#include "SDL2/SDL_mixer.h"
 
 class BlockyGame;
 
@@ -31,7 +32,7 @@ public:
   virtual void init();
   virtual void update();
   virtual void shutdown();
-
+  
   virtual void handleInput();
 };
 
@@ -42,13 +43,15 @@ class SinglePlayerState : public GameState {
 
   Piece* piece;
   Piece* nextPiece;
-  
+
+  Matrix* matrix;
 public:
 
   SinglePlayerState(BlockyGame *game): background(NULL) {
     this->game = game;
     this->piece = nullptr;
     this->nextPiece = nullptr;
+    this->matrix = nullptr;
   }
   
   // GameState
@@ -57,6 +60,10 @@ public:
   virtual void init();
   virtual void update();
   virtual void shutdown();
+
+  // specific game methods
+  void spawnPiece();
+  
 };
 
 #endif

@@ -73,6 +73,8 @@ void SinglePlayerState::init() {
   
   background = SDL_CreateTextureFromSurface(renderer, background_surface);
   SDL_FreeSurface(background_surface);
+  this->matrix = new Matrix(NUM_ROWS, NUM_COLS);
+  
   log->debug("init complete");
 }
 
@@ -99,11 +101,17 @@ void SinglePlayerState::handleInput() {
 
 void SinglePlayerState::update() {
   auto log = spdlog::get("SinglePlayerState");
-  SDL_Renderer* renderer = ServiceLocator::getRenderer();
+  SDL_Renderer* renderer = ServiceLocator::getRenderer();  
   SDL_RenderCopy(renderer, background, NULL, NULL);
 }
 
 void SinglePlayerState::shutdown() {
   auto log = spdlog::get("SinglePlayerState");
   SDL_DestroyTexture(background);
+  delete matrix;
+}
+
+void SinglePlayerState::spawnPiece() {
+  // pick a random piece from a set/list of pieces
+  // set it to the next piece...
 }

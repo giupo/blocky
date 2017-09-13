@@ -25,18 +25,43 @@ public:
   virtual ~Block() {}
 };
 
-# define MAX_PIECES 4
+# define MAX_BLOCKS 4 // Che tetris sarebbe? :D
 
 class Piece {
-  Block blocks[MAX_PIECES];
+  Block blocks[MAX_BLOCKS];
 public:
   Piece() {}
   virtual ~Piece() {}
 };
 
-class Field {
-  
-  Block::Color container[30][10];
-};
+namespace Tetronimos {
+  const int L[MAX_BLOCKS][MAX_BLOCKS] = {
+    0,1,0,0,
+    0,1,0,0,
+    0,1,1,0,
+    0,0,0,0
+  };
+
+  const int I[MAX_BLOCKS][MAX_BLOCKS] = {
+    0,1,0,0,
+    0,1,0,0,
+    0,1,0,0,
+    0,1,0,0
+  };
+
+  const int T[MAX_BLOCKS][MAX_BLOCKS] = {
+    0,0,0,0,
+    0,1,0,0,
+    1,1,1,0,
+    0,0,0,0
+  };
+
+  const int Z[MAX_BLOCKS][MAX_BLOCKS] = {
+    0,0,0,0,
+    1,1,0,0,
+    0,1,1,0,
+    0,0,0,0
+  };
+}
 
 #endif
